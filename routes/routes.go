@@ -11,6 +11,6 @@ func RegisterRoutes(router *gin.Engine) {
 	{
 		movies := api.Group("/movies")
 
-		movies.GET("", handlers.GetPopularMovies)
+		movies.GET("/popular", handlers.GetPopularMovies)
 	}
 }
