@@ -1,12 +1,5 @@
 package models
 
-type PopularMovies struct {
-	Page         int64   `json:"page"`
-	Results      []Movie `json:"results"`
-	TotalPages   int64   `json:"total_pages"`
-	TotalResults int64   `json:"total_results"`
-}
-
 type Movie struct {
 	Adult               bool                `json:"adult"`
 	BackdropPath        string              `json:"backdrop_path"`
