@@ -36,6 +36,7 @@ func Migrate(db *sqlx.DB) {
 
 	if _, err := db.Exec(database.SCHEMA); err != nil {
 		log.Printf("[!!] Error to create tables: %v", err)
+		return
 	}
 	log.Println("[!] Tables created...")
 }

@@ -13,6 +13,7 @@ func Seeds(db *sqlx.DB) {
 
 	if _, err := db.Exec(database.USERS); err != nil {
 		log.Printf("[!!] Error insert seeds: %v", err)
+		return
 	}
 	log.Println("[!] Seeds inserted...")
 }
