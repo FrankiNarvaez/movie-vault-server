@@ -19,8 +19,6 @@ func MoviesRoutes(api *gin.RouterGroup) {
 		moviesById.GET("/videos")
 		moviesById.GET("/recommendations")
 		moviesById.GET("/external_ids")
-		// moviesById.GET("/reviews")
-		// moviesById.GET("/similar")
 		moviesById.GET("/watch_providers")
 	}
 }
