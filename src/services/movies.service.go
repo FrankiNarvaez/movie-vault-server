@@ -9,8 +9,15 @@ import (
 	"net/http"
 )
 
-func FetchPopularMovies(language string) (models.PopularMovies, error) {
-	var movie models.PopularMovies
+type PopularMovies struct {
+	Page         int64          `json:"page"`
+	Results      []models.Movie `json:"results"`
+	TotalPages   int64          `json:"total_pages"`
+	TotalResults int64          `json:"total_results"`
+}
+
+func FetchPopularMovies(language string) (PopularMovies, error) {
+	var movie PopularMovies
 
 	url := fmt.Sprintf("https://api.themoviedb.org/3/movie/popular?language=%s", language)
 	api_key := fmt.Sprintf("Bearer %s", config.TMDBApiKey)
