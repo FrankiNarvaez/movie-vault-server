@@ -6,6 +6,7 @@ import (
 	"io"
 	config "movie/internal"
 	"movie/src/models"
+	"movie/src/types"
 	"net/http"
 )
 
@@ -145,13 +146,13 @@ func FetchPersonCombinedCredits(person_id string, language string) (PersonCombin
 	return credits, nil
 }
 
-func FetchPersonExternalIds(person_id string) (models.PersonExternalIds, error) {
-	var ids models.PersonExternalIds
+func FetchPersonExternalIds(person_id string) (types.ExternalIDs, error) {
+	var ids types.ExternalIDs
 	url := fmt.Sprintf("/person/%s/external_ids", person_id)
 
 	err := fetchFromTMDB(url, &ids)
 	if err != nil {
-		return models.PersonExternalIds{}, err
+		return types.ExternalIDs{}, err
 	}
 
 	return ids, nil
