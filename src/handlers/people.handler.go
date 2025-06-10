@@ -7,18 +7,28 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func validateQueryLanguage(c *gin.Context) string {
+	language := c.Query("language")
+	if language == "" {
+		language = "en-US" // default language
+	}
+	return language
+}
+
 func GetPopularPeople(c *gin.Context) {
-	people, err := services.FetchPopularPeople("en-US")
+	language := validateQueryLanguage(c)
+
+	people, err := services.FetchPopularPeople(language)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch people"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
 	c.JSON(http.StatusOK, people)
 }
-
 func GetTrendingPeople(c *gin.Context) {
-	people, err := services.FetchTrendingPeople("en-US")
+	language := validateQueryLanguage(c)
+	people, err := services.FetchTrendingPeople(language)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch people"})
 		return
