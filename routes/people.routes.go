@@ -10,7 +10,7 @@ func PeopleRoutes(api *gin.RouterGroup) {
 	people := api.Group("/people")
 
 	people.GET("/popular", handlers.GetPopularPeople)
-	people.GET("/trending", handlers.GetTrendingPeople)
+	people.GET("/trending/:time_window", handlers.GetTrendingPeople)
 
 	peopleById := people.Group("/:person_id")
 	{
