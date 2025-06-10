@@ -3,23 +3,12 @@ package services
 import (
 	"fmt"
 	"movie/src/models"
+	"movie/src/types"
 	"movie/src/utils"
 )
 
-type Movies struct {
-	Page         int64          `json:"page"`
-	Results      []models.Movie `json:"results"`
-	TotalPages   int64          `json:"total_pages"`
-	TotalResults int64          `json:"total_results"`
-}
-
-type VideoResults struct {
-	ID      int            `json:"id"`
-	Results []models.Video `json:"results"`
-}
-
-func FetchPopularMovies(language, page string) (Movies, error) {
-	var movies Movies
+func FetchPopularMovies(language, page string) (types.Movies, error) {
+	var movies types.Movies
 
 	if language == "" {
 		language = "en-US"
@@ -31,14 +20,14 @@ func FetchPopularMovies(language, page string) (Movies, error) {
 
 	url := fmt.Sprintf("/movie/popular?language=%s&page=%s", language, page)
 	if err := utils.FetchFromTMDB(url, &movies); err != nil {
-		return movies, err
+		return types.Movies{}, err
 	}
 
 	return movies, nil
 }
 
-func FetchTrendingMovies(time_window, language string) (Movies, error) {
-	var movies Movies
+func FetchTrendingMovies(time_window, language string) (types.Movies, error) {
+	var movies types.Movies
 
 	if language == "" {
 		language = "en-US"
@@ -51,7 +40,7 @@ func FetchTrendingMovies(time_window, language string) (Movies, error) {
 	url := fmt.Sprintf("/trending/movie/%s?language=%s", time_window, language)
 
 	if err := utils.FetchFromTMDB(url, &movies); err != nil {
-		return movies, err
+		return types.Movies{}, err
 	}
 
 	return movies, nil
@@ -63,7 +52,7 @@ func FetchMovieDetails(movie_id, language string) (models.Movie, error) {
 	url := fmt.Sprintf("/movie/%s?language=%s", movie_id, language)
 
 	if err := utils.FetchFromTMDB(url, &movie); err != nil {
-		return movie, err
+		return models.Movie{}, err
 	}
 
 	return movie, nil
@@ -79,7 +68,7 @@ func FetchMovieCredits(movie_id, language string) (models.Movie, error) {
 	url := fmt.Sprintf("/movie/%s/credits?language=%s", movie_id, language)
 
 	if err := utils.FetchFromTMDB(url, &credits); err != nil {
-		return credits, err
+		return models.Movie{}, err
 	}
 
 	return credits, nil
@@ -95,14 +84,14 @@ func FetchMovieImages(movie_id, language string) (models.MediaImages, error) {
 	url := fmt.Sprintf("/movie/%s/images?language=%s", movie_id, language)
 
 	if err := utils.FetchFromTMDB(url, &images); err != nil {
-		return images, err
+		return models.MediaImages{}, err
 	}
 
 	return images, nil
 }
 
-func FetchMovieVideos(movie_id, language string) (VideoResults, error) {
-	var videos VideoResults
+func FetchMovieVideos(movie_id, language string) (types.VideoResults, error) {
+	var videos types.VideoResults
 
 	if language == "" {
 		language = "en-US"
@@ -111,14 +100,14 @@ func FetchMovieVideos(movie_id, language string) (VideoResults, error) {
 	url := fmt.Sprintf("/movie/%s/videos?language=%s", movie_id, language)
 
 	if err := utils.FetchFromTMDB(url, &videos); err != nil {
-		return videos, err
+		return types.VideoResults{}, err
 	}
 
 	return videos, nil
 }
 
-func FetchMovieRecommendations(movie_id, language, page string) (Movies, error) {
-	var recommendations Movies
+func FetchMovieRecommendations(movie_id, language, page string) (types.Movies, error) {
+	var recommendations types.Movies
 
 	if language == "" {
 		language = "en-US"
@@ -137,13 +126,13 @@ func FetchMovieRecommendations(movie_id, language, page string) (Movies, error) 
 	return recommendations, nil
 }
 
-func FetchMovieExternalIds(movie_id string) (models.ExternalIDs, error) {
-	var external_ids models.ExternalIDs
+func FetchMovieExternalIds(movie_id string) (types.ExternalIDs, error) {
+	var external_ids types.ExternalIDs
 
 	url := fmt.Sprintf("/movie/%s/external_ids", movie_id)
 
 	if err := utils.FetchFromTMDB(url, &external_ids); err != nil {
-		return external_ids, err
+		return types.ExternalIDs{}, err
 	}
 
 	return external_ids, nil
@@ -155,7 +144,7 @@ func FetchMovieWatchProviders(movie_id string) (models.WatchProviders, error) {
 	url := fmt.Sprintf("/movie/%s/external_ids", movie_id)
 
 	if err := utils.FetchFromTMDB(url, &providers); err != nil {
-		return providers, err
+		return models.WatchProviders{}, err
 	}
 
 	return providers, nil
