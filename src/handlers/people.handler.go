@@ -17,8 +17,11 @@ func validateQueryLanguage(c *gin.Context) string {
 
 func GetPopularPeople(c *gin.Context) {
 	language := validateQueryLanguage(c)
-
-	people, err := services.FetchPopularPeople(language)
+	page := c.Query("page")
+	if page == "" {
+		page = "1"
+	}
+	people, err := services.FetchPopularPeople(language, page)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -26,9 +29,25 @@ func GetPopularPeople(c *gin.Context) {
 
 	c.JSON(http.StatusOK, people)
 }
+
+func validateTimeWindow(c *gin.Context) string {
+	time_window := c.Param("time_window")
+	if time_window == "" {
+		time_window = "day"
+	}
+
+	if time_window != "day" && time_window != "week" {
+		time_window = "day"
+	}
+
+	return time_window
+}
+
 func GetTrendingPeople(c *gin.Context) {
 	language := validateQueryLanguage(c)
-	people, err := services.FetchTrendingPeople(language)
+	time_window := validateTimeWindow(c)
+
+	people, err := services.FetchTrendingPeople(language, time_window)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch people"})
 		return
@@ -39,7 +58,8 @@ func GetTrendingPeople(c *gin.Context) {
 
 func GetPersonDetails(c *gin.Context) {
 	person_id := c.Param("person_id")
-	person, err := services.FetchPersonDetails(person_id)
+	language := validateQueryLanguage(c)
+	person, err := services.FetchPersonDetails(person_id, language)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch person details"})
 		return
@@ -61,7 +81,8 @@ func GetPersonImages(c *gin.Context) {
 
 func GetPersonMovieCredits(c *gin.Context) {
 	person_id := c.Param("person_id")
-	credits, err := services.FetchPersonMovieCredits(person_id)
+	language := validateQueryLanguage(c)
+	credits, err := services.FetchPersonMovieCredits(person_id, language)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch person movie credits"})
 		return
@@ -72,7 +93,8 @@ func GetPersonMovieCredits(c *gin.Context) {
 
 func GetPersonCombinedCredits(c *gin.Context) {
 	person_id := c.Param("person_id")
-	credits, err := services.FetchPersonCombinedCredits(person_id)
+	language := validateQueryLanguage(c)
+	credits, err := services.FetchPersonCombinedCredits(person_id, language)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch person combined credits"})
 		return
