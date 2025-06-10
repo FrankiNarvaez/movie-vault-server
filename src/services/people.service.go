@@ -10,37 +10,6 @@ import (
 	"net/http"
 )
 
-type popularPeople struct {
-	Pages        int64           `json:"pages"`
-	Results      []models.Person `json:"results"`
-	TotalPages   int64           `json:"total_pages"`
-	TotalResults int64           `json:"total_results"`
-}
-
-type trendingPeople struct {
-	Pages        int64                  `json:"pages"`
-	Results      []types.PersonTrending `json:"results"`
-	TotalPages   int64                  `json:"total_pages"`
-	TotalResults int64                  `json:"total_results"`
-}
-
-type personImages struct {
-	Id       int              `json:"id"`
-	Profiles []types.Profiles `json:"profiles"`
-}
-
-type PersonMovieCredits struct {
-	Cast []types.Cast `json:"cast"`
-	Crew []types.Crew `json:"crew"`
-	Id   int          `json:"id"`
-}
-
-type PersonCombinedCredits struct {
-	Cast []types.Cast `json:"cast"`
-	Crew []types.Crew `json:"crew"`
-	Id   int          `json:"id"`
-}
-
 var url_base string = "https://api.themoviedb.org/3"
 
 func fetchFromTMDB(final_url string, result interface{}) error {
@@ -74,25 +43,25 @@ func fetchFromTMDB(final_url string, result interface{}) error {
 	return nil
 }
 
-func FetchPopularPeople(language string, page string) (popularPeople, error) {
-	var people popularPeople
+func FetchPopularPeople(language string, page string) (types.PopularPeople, error) {
+	var people types.PopularPeople
 	url := fmt.Sprintf("/person/popular?language=%s&page=%s", language, page)
 
 	err := fetchFromTMDB(url, &people)
 	if err != nil {
-		return popularPeople{}, err
+		return types.PopularPeople{}, err
 	}
 
 	return people, nil
 }
 
-func FetchTrendingPeople(language string, time_window string) (trendingPeople, error) {
-	var people trendingPeople
+func FetchTrendingPeople(language string, time_window string) (types.TrendingPeople, error) {
+	var people types.TrendingPeople
 	url := fmt.Sprintf("/trending/person/%s?language=%s", time_window, language)
 
 	err := fetchFromTMDB(url, &people)
 	if err != nil {
-		return trendingPeople{}, err
+		return types.TrendingPeople{}, err
 	}
 
 	return people, nil
@@ -110,37 +79,37 @@ func FetchPersonDetails(person_id string, language string) (models.Person, error
 	return person, nil
 }
 
-func FetchPersonImages(person_id string) (personImages, error) {
-	var images personImages
+func FetchPersonImages(person_id string) (types.PersonImages, error) {
+	var images types.PersonImages
 	url := fmt.Sprintf("/person/%s/images", person_id)
 
 	err := fetchFromTMDB(url, &images)
 	if err != nil {
-		return personImages{}, err
+		return types.PersonImages{}, err
 	}
 
 	return images, nil
 }
 
-func FetchPersonMovieCredits(person_id string, language string) (PersonMovieCredits, error) {
-	var credits PersonMovieCredits
+func FetchPersonMovieCredits(person_id string, language string) (types.PersonMovieCredits, error) {
+	var credits types.PersonMovieCredits
 	url := fmt.Sprintf("/person/%s/movie_credits?language=%s", person_id, language)
 
 	err := fetchFromTMDB(url, &credits)
 	if err != nil {
-		return PersonMovieCredits{}, err
+		return types.PersonMovieCredits{}, err
 	}
 
 	return credits, nil
 }
 
-func FetchPersonCombinedCredits(person_id string, language string) (PersonCombinedCredits, error) {
-	var credits PersonCombinedCredits
+func FetchPersonCombinedCredits(person_id string, language string) (types.PersonCombinedCredits, error) {
+	var credits types.PersonCombinedCredits
 	url := fmt.Sprintf("/person/%s/combined_credits?language=%s", person_id, language)
 
 	err := fetchFromTMDB(url, &credits)
 	if err != nil {
-		return PersonCombinedCredits{}, err
+		return types.PersonCombinedCredits{}, err
 	}
 
 	return credits, nil

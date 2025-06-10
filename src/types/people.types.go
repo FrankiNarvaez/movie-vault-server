@@ -1,5 +1,7 @@
 package types
 
+import "movie/src/models"
+
 type PersonTrending struct {
 	Adult              bool    `json:"adult"`
 	Id                 int     `json:"id"`
@@ -78,4 +80,35 @@ type PersonExternalIds struct {
 	Tiktok_id    *string `json:"tiktok_id"`
 	Twitter_id   *string `json:"twitter_id"`
 	Youtube_id   *string `json:"youtube_id"`
+}
+
+type PopularPeople struct {
+	Pages        int64           `json:"pages"`
+	Results      []models.Person `json:"results"`
+	TotalPages   int64           `json:"total_pages"`
+	TotalResults int64           `json:"total_results"`
+}
+
+type TrendingPeople struct {
+	Pages        int64            `json:"pages"`
+	Results      []PersonTrending `json:"results"`
+	TotalPages   int64            `json:"total_pages"`
+	TotalResults int64            `json:"total_results"`
+}
+
+type PersonImages struct {
+	Id       int        `json:"id"`
+	Profiles []Profiles `json:"profiles"`
+}
+
+type PersonMovieCredits struct {
+	Cast []Cast `json:"cast"`
+	Crew []Crew `json:"crew"`
+	Id   int    `json:"id"`
+}
+
+type PersonCombinedCredits struct {
+	Cast []Cast `json:"cast"`
+	Crew []Crew `json:"crew"`
+	Id   int    `json:"id"`
 }
