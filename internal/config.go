@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -14,5 +15,5 @@ func LoadConfig() {
 		log.Fatal("[!!] Fail to load .env file")
 	}
 
-	TMDBApiKey = os.Getenv("TMDB_API_KEY")
+	TMDBApiKey = fmt.Sprintf("Bearer %s", os.Getenv("TMDB_API_KEY"))
 }
