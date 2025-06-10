@@ -146,13 +146,13 @@ func FetchPersonCombinedCredits(person_id string, language string) (PersonCombin
 	return credits, nil
 }
 
-func FetchPersonExternalIds(person_id string) (types.PersonExternalIds, error) {
-	var ids types.PersonExternalIds
+func FetchPersonExternalIds(person_id string) (types.ExternalIDs, error) {
+	var ids types.ExternalIDs
 	url := fmt.Sprintf("/person/%s/external_ids", person_id)
 
 	err := fetchFromTMDB(url, &ids)
 	if err != nil {
-		return types.PersonExternalIds{}, err
+		return types.ExternalIDs{}, err
 	}
 
 	return ids, nil
