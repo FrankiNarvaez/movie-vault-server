@@ -6,6 +6,7 @@ import (
 	"io"
 	config "movie/internal"
 	"movie/src/models"
+	"movie/src/types"
 	"net/http"
 )
 
@@ -17,27 +18,27 @@ type popularPeople struct {
 }
 
 type trendingPeople struct {
-	Pages        int64                   `json:"pages"`
-	Results      []models.PersonTrending `json:"results"`
-	TotalPages   int64                   `json:"total_pages"`
-	TotalResults int64                   `json:"total_results"`
+	Pages        int64                  `json:"pages"`
+	Results      []types.PersonTrending `json:"results"`
+	TotalPages   int64                  `json:"total_pages"`
+	TotalResults int64                  `json:"total_results"`
 }
 
 type personImages struct {
-	Id       int               `json:"id"`
-	Profiles []models.Profiles `json:"profiles"`
+	Id       int              `json:"id"`
+	Profiles []types.Profiles `json:"profiles"`
 }
 
 type PersonMovieCredits struct {
-	Cast []models.Cast `json:"cast"`
-	Crew []models.Crew `json:"crew"`
-	Id   int           `json:"id"`
+	Cast []types.Cast `json:"cast"`
+	Crew []types.Crew `json:"crew"`
+	Id   int          `json:"id"`
 }
 
 type PersonCombinedCredits struct {
-	Cast []models.Cast `json:"cast"`
-	Crew []models.Crew `json:"crew"`
-	Id   int           `json:"id"`
+	Cast []types.Cast `json:"cast"`
+	Crew []types.Crew `json:"crew"`
+	Id   int          `json:"id"`
 }
 
 var url_base string = "https://api.themoviedb.org/3"
@@ -145,13 +146,13 @@ func FetchPersonCombinedCredits(person_id string, language string) (PersonCombin
 	return credits, nil
 }
 
-func FetchPersonExternalIds(person_id string) (models.PersonExternalIds, error) {
-	var ids models.PersonExternalIds
+func FetchPersonExternalIds(person_id string) (types.PersonExternalIds, error) {
+	var ids types.PersonExternalIds
 	url := fmt.Sprintf("/person/%s/external_ids", person_id)
 
 	err := fetchFromTMDB(url, &ids)
 	if err != nil {
-		return models.PersonExternalIds{}, err
+		return types.PersonExternalIds{}, err
 	}
 
 	return ids, nil

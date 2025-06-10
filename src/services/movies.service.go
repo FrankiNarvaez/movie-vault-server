@@ -20,7 +20,7 @@ func FetchPopularMovies(language string) (PopularMovies, error) {
 	var movie PopularMovies
 
 	url := fmt.Sprintf("https://api.themoviedb.org/3/movie/popular?language=%s", language)
-	api_key := fmt.Sprintf("Bearer %s", config.TMDBApiKey)
+	api_key := fmt.Sprintf("%s", config.TMDBApiKey)
 
 	// Create request
 	req, err := http.NewRequest("GET", url, nil)
