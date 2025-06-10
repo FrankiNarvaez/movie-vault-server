@@ -73,9 +73,9 @@ func fetchFromTMDB(final_url string, result interface{}) error {
 	return nil
 }
 
-func FetchPopularPeople(language string) (popularPeople, error) {
+func FetchPopularPeople(language string, page string) (popularPeople, error) {
 	var people popularPeople
-	url := fmt.Sprintf("/person/popular?language=%s&page=1", language)
+	url := fmt.Sprintf("/person/popular?language=%s&page=%s", language, page)
 
 	err := fetchFromTMDB(url, &people)
 	if err != nil {
@@ -85,9 +85,9 @@ func FetchPopularPeople(language string) (popularPeople, error) {
 	return people, nil
 }
 
-func FetchTrendingPeople(language string) (trendingPeople, error) {
+func FetchTrendingPeople(language string, time_window string) (trendingPeople, error) {
 	var people trendingPeople
-	url := fmt.Sprintf("/trending/person/day?language=%s", language)
+	url := fmt.Sprintf("/trending/person/%s?language=%s", time_window, language)
 
 	err := fetchFromTMDB(url, &people)
 	if err != nil {
@@ -97,9 +97,9 @@ func FetchTrendingPeople(language string) (trendingPeople, error) {
 	return people, nil
 }
 
-func FetchPersonDetails(person_id string) (models.Person, error) {
+func FetchPersonDetails(person_id string, language string) (models.Person, error) {
 	var person models.Person
-	url := fmt.Sprintf("/person/%s", person_id)
+	url := fmt.Sprintf("/person/%s?language=%s", person_id, language)
 
 	err := fetchFromTMDB(url, &person)
 	if err != nil {
@@ -121,9 +121,9 @@ func FetchPersonImages(person_id string) (personImages, error) {
 	return images, nil
 }
 
-func FetchPersonMovieCredits(person_id string) (PersonMovieCredits, error) {
+func FetchPersonMovieCredits(person_id string, language string) (PersonMovieCredits, error) {
 	var credits PersonMovieCredits
-	url := fmt.Sprintf("/person/%s/movie_credits", person_id)
+	url := fmt.Sprintf("/person/%s/movie_credits?language=%s", person_id, language)
 
 	err := fetchFromTMDB(url, &credits)
 	if err != nil {
@@ -133,9 +133,9 @@ func FetchPersonMovieCredits(person_id string) (PersonMovieCredits, error) {
 	return credits, nil
 }
 
-func FetchPersonCombinedCredits(person_id string) (PersonCombinedCredits, error) {
+func FetchPersonCombinedCredits(person_id string, language string) (PersonCombinedCredits, error) {
 	var credits PersonCombinedCredits
-	url := fmt.Sprintf("/person/%s/combined_credits", person_id)
+	url := fmt.Sprintf("/person/%s/combined_credits?language=%s", person_id, language)
 
 	err := fetchFromTMDB(url, &credits)
 	if err != nil {
