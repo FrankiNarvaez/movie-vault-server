@@ -21,5 +21,6 @@ CREATE TABLE favorites (
 
 const DROP_SCHEMA = `
 	DROP TABLE favorites;
+	DROP TABLE watch_lists;
 	DROP TABLE users;
 	`
