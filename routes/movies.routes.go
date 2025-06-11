@@ -9,8 +9,6 @@ import (
 func MoviesRoutes(api *gin.RouterGroup) {
 	movies := api.Group("/movies")
 
-	// language
-	// page
 	movies.GET("/popular", handlers.GetPopularMovies)
 	movies.GET("/trending/:time_window", handlers.GetTrendingMovies)
 
