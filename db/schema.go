@@ -8,7 +8,8 @@ CREATE TABLE users (
 	username VARCHAR(25) UNIQUE,
 	email VARCHAR(50) UNIQUE NOT NULL,
 	password VARCHAR(255),
-	remember_at TIMESTAMP
+	remember_at TIMESTAMP,
+	created_at TIMESTAMP
 );
 
 CREATE TABLE favorites (
