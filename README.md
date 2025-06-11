@@ -7,6 +7,7 @@ go get github.com/gin-gonic/gin
 go get github.com/jmoiron/sqlx
 go get github.com/lib/pq
 go get github.com/golang-jwt/jwt/v5
+go get golang.org/x/crypto/bcrypt
 ```
 
 ## Script
