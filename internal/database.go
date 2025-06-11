@@ -8,16 +8,14 @@ import (
 	_ "github.com/lib/pq"
 )
 
-var db *sqlx.DB
+var DB *sqlx.DB
 
-func ConnectDB() *sqlx.DB {
+func ConnectDB() {
 	database_url := os.Getenv("DATABASE_URL")
 
 	var err error
-	db, err = sqlx.Connect("postgres", database_url)
+	DB, err = sqlx.Connect("postgres", database_url)
 	if err != nil {
 		log.Fatalf("[!!] Ha ocurrido un error al conectar a la base de datos: %v", err)
 	}
-
-	return db
 }
