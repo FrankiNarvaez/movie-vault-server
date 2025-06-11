@@ -11,5 +11,6 @@ func RegisterRoutes(router *gin.Engine) {
 		MoviesRoutes(api)
 		PeopleRoutes(api)
 		TvRoutes(api)
+		FavoriteRoutes(api)
 	}
 }

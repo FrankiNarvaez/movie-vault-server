@@ -10,8 +10,16 @@ CREATE TABLE users (
 	password VARCHAR(255),
 	remember_at TIMESTAMP
 );
+
+CREATE TABLE favorites (
+	id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+	user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+	imdb_id VARCHAR NOT NULL,
+	type VARCHAR(10) NOT NULL
+);
 	`
 
 const DROP_SCHEMA = `
+	DROP TABLE favorites;
 	DROP TABLE users;
 	`
