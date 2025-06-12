@@ -59,7 +59,7 @@ func UserExists(credentials Credential) bool {
 func GenerateToken(username string) (string, error) {
 	generateToken := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"username": username,
-		"exp":      time.Now().Add(time.Hour * 24).Unix(),
+		"exp":      time.Now().Add(time.Hour * 1200).Unix(),
 	})
 
 	return generateToken.SignedString([]byte(config.Secret))
