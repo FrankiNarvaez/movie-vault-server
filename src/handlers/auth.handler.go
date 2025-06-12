@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -55,6 +56,26 @@ func UserExists(credentials Credential) bool {
 	return false
 }
 
+func GenerateToken(username string) (string, error) {
+	generateToken := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"username": username,
+		"exp":      time.Now().Add(time.Hour * 24).Unix(),
+	})
+
+	return generateToken.SignedString([]byte(config.Secret))
+}
+
+func ValidateToken(tokenString string) bool {
+	_, err := jwt.Parse(tokenString, func(token *jwt.Token) (any, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+		}
+		return []byte(config.Secret), nil
+	})
+
+	return err == nil
+}
+
 func Login(c *gin.Context) {
 	var credentials Credential
 	var user models.User
@@ -96,12 +117,19 @@ func Login(c *gin.Context) {
 		return
 	}
 
+	// Generate token
+	token, err := GenerateToken(*credentials.Username)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Could not create token"})
+		return
+	}
+
 	c.JSON(http.StatusOK, gin.H{
-		"message": "Login successful",
 		"user": gin.H{
 			"id":       user.ID,
 			"username": user.Username,
 			"email":    user.Email,
+			"token":    token,
 		},
 	})
 }
