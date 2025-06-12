@@ -8,7 +8,10 @@ import (
 	"github.com/joho/godotenv"
 )
 
-var TMDBApiKey string
+var (
+	TMDBApiKey string
+	Secret     string
+)
 
 func LoadConfig() {
 	if err := godotenv.Load(); err != nil {
@@ -16,4 +19,5 @@ func LoadConfig() {
 	}
 
 	TMDBApiKey = fmt.Sprintf("Bearer %s", os.Getenv("TMDB_API_KEY"))
+	Secret = os.Getenv("JWT_SECRET")
 }
