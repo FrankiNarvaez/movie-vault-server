@@ -103,7 +103,7 @@ type MediaImages struct {
 type Image struct {
 	AspectRatio float64 `json:"aspect_ratio"`
 	Height      int     `json:"height"`
-	Iso639_1    string  `json:"iso_639_1"`
+	Iso639_1    *string `json:"iso_639_1"`
 	FilePath    string  `json:"file_path"`
 	VoteAverage float64 `json:"vote_average"`
 	VoteCount   int     `json:"vote_count"`

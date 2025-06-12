@@ -47,8 +47,8 @@ type EpisodeTv struct {
 	VoteCount      int     `json:"vote_count"`
 	AirDate        string  `json:"air_date"`
 	EpisodeNumber  int     `json:"episode_number"`
-	EpisodeType    string  `json:"episode_type"`
-	ProductionCode string  `json:"production_code"`
+	EpisodeType    *string `json:"episode_type"`
+	ProductionCode *string `json:"production_code"`
 	Runtime        *int    `json:"runtime"`
 	SeasonNumber   int     `json:"season_number"`
 	ShowID         int     `json:"show_id"`
@@ -79,8 +79,8 @@ type SeasonTV struct {
 	EpisodeCount int     `json:"episode_count"`
 	ID           int     `json:"id"`
 	Name         string  `json:"name"`
-	Overview     string  `json:"overview"`
-	PosterPath   string  `json:"poster_path"`
+	Overview     *string `json:"overview"`
+	PosterPath   *string `json:"poster_path"`
 	SeasonNumber int     `json:"season_number"`
 	VoteAverage  float64 `json:"vote_average"`
 }
@@ -96,7 +96,7 @@ type SeasonSeason struct {
 type Episode struct {
 	AirDate        string       `json:"air_date"`
 	EpisodeNumber  int          `json:"episode_number"`
-	EpisodeType    string       `json:"episode_type"`
+	EpisodeType    *string      `json:"episode_type"`
 	ID             int          `json:"id"`
 	Name           string       `json:"name"`
 	Overview       string       `json:"overview"`
