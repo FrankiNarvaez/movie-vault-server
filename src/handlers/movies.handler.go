@@ -67,9 +67,8 @@ func GetMovieCredits(c *gin.Context) {
 
 func GetMovieImages(c *gin.Context) {
 	movie_id := c.Param("movie_id")
-	language := c.Query("language")
 
-	images, err := services.FetchMovieImages(movie_id, language)
+	images, err := services.FetchMovieImages(movie_id)
 	if err != nil {
 		utils.HandleError(c, err)
 		return
