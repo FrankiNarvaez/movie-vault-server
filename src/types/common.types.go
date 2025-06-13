@@ -15,3 +15,22 @@ type ExternalIDs struct {
 	Twitter_id   *string `json:"twitter_id,omitempty"`
 	Youtube_id   *string `json:"youtube_id,omitempty"`
 }
+
+type WatchProviders struct {
+	ID      int                        `json:"id"`
+	Results map[string]CountryProvider `json:"results"`
+}
+
+type CountryProvider struct {
+	Link     string     `json:"link"`
+	Flatrate []Provider `json:"flatrate"`
+	Rent     []Provider `json:"rent"`
+	Buy      []Provider `json:"buy"`
+}
+
+type Provider struct {
+	LogoPath        string `json:"logo_path"`
+	ProviderID      int    `json:"provider_id"`
+	ProviderName    string `json:"provider_name"`
+	DisplayPriority int    `json:"display_priority"`
+}

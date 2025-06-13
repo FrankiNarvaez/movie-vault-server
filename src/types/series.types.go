@@ -113,16 +113,16 @@ type SeriesCredits struct {
 
 // user to series and season
 type SeriesImages struct {
-	Backdrops *[]models.Image `json:"backdrops"`
-	Id        int             `json:"id"`
-	Logos     *[]models.Image `json:"logos"`
-	Posters   []models.Image  `json:"posters"`
+	Backdrops *[]Image `json:"backdrops"`
+	Id        int      `json:"id"`
+	Logos     *[]Image `json:"logos"`
+	Posters   []Image  `json:"posters"`
 }
 
 // used to unmarshal series and season
 type SeriesVideos struct {
-	Id      int            `json:"id"`
-	Results []models.Video `json:"results"`
+	Id      int     `json:"id"`
+	Results []Video `json:"results"`
 }
 
 type SeriesRecommendations struct {
@@ -130,26 +130,6 @@ type SeriesRecommendations struct {
 	Results      []ResultsTv `json:"results"`
 	TotalPages   int64       `json:"total_pages"`
 	TotalResults int64       `json:"total_results"`
-}
-
-type Provider struct {
-	LogoPath        string `json:"logo_path"`
-	ProviderId      int    `json:"provider_id"`
-	ProviderName    string `json:"provider_name"`
-	DisplayPriority int    `json:"display_priority"`
-}
-
-type InfoProvider struct {
-	Link     string      `json:"link"`
-	Flatrate *[]Provider `json:"flatrate"`
-	Rent     *[]Provider `json:"rent"`
-	Buy      *[]Provider `json:"buy"`
-	Ads      *[]Provider `json:"ads"`
-}
-
-type WatchProviders struct {
-	ID      int                     `json:"id"`
-	Results map[string]InfoProvider `json:"results"`
 }
 
 /// Season types
@@ -182,6 +162,6 @@ type EpisodeCredits struct {
 }
 
 type EpisodeImages struct {
-	Id     int            `json:"id"`
-	Stills []models.Image `json:"stills"`
+	Id     int     `json:"id"`
+	Stills []Image `json:"stills"`
 }
