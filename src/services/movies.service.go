@@ -57,8 +57,8 @@ func FetchMovieDetails(movie_id, language string) (models.Movie, error) {
 	return movie, nil
 }
 
-func FetchMovieCredits(movie_id, language string) (models.Movie, error) {
-	var credits models.Movie
+func FetchMovieCredits(movie_id, language string) (models.MovieCredits, error) {
+	var credits models.MovieCredits
 
 	if language == "" {
 		language = "en-US"
@@ -68,7 +68,7 @@ func FetchMovieCredits(movie_id, language string) (models.Movie, error) {
 
 	statusCode, err := utils.FetchFromTMDB(url, &credits)
 	if err != nil {
-		return models.Movie{}, utils.HandleTMDBError(statusCode, "movie credits for ID "+movie_id, err)
+		return models.MovieCredits{}, utils.HandleTMDBError(statusCode, "movie credits for ID "+movie_id, err)
 	}
 
 	return credits, nil
