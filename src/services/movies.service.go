@@ -57,8 +57,8 @@ func FetchMovieDetails(movie_id, language string) (models.Movie, error) {
 	return movie, nil
 }
 
-func FetchMovieCredits(movie_id, language string) (models.MovieCredits, error) {
-	var credits models.MovieCredits
+func FetchMovieCredits(movie_id, language string) (types.MovieCredits, error) {
+	var credits types.MovieCredits
 
 	if language == "" {
 		language = "en-US"
@@ -68,20 +68,20 @@ func FetchMovieCredits(movie_id, language string) (models.MovieCredits, error) {
 
 	statusCode, err := utils.FetchFromTMDB(url, &credits)
 	if err != nil {
-		return models.MovieCredits{}, utils.HandleTMDBError(statusCode, "movie credits for ID "+movie_id, err)
+		return types.MovieCredits{}, utils.HandleTMDBError(statusCode, "movie credits for ID "+movie_id, err)
 	}
 
 	return credits, nil
 }
 
-func FetchMovieImages(movie_id string) (models.MediaImages, error) {
-	var images models.MediaImages
+func FetchMovieImages(movie_id string) (types.MediaImages, error) {
+	var images types.MediaImages
 
 	url := fmt.Sprintf("/movie/%s/images", movie_id)
 
 	statusCode, err := utils.FetchFromTMDB(url, &images)
 	if err != nil {
-		return models.MediaImages{}, utils.HandleTMDBError(statusCode, "movie images for ID "+movie_id, err)
+		return types.MediaImages{}, utils.HandleTMDBError(statusCode, "movie images for ID "+movie_id, err)
 	}
 
 	return images, nil
