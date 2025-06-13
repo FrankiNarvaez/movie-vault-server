@@ -3,7 +3,9 @@ package handlers
 import (
 	"fmt"
 	config "movie/internal"
+	"movie/src/errors"
 	"movie/src/models"
+	"movie/src/utils"
 	"net/http"
 	"time"
 
@@ -13,9 +15,14 @@ import (
 )
 
 type Credential struct {
-	Username *string `json:"username"`
-	Email    *string `json:"email"`
-	Password string  `json:"password"`
+	Login    string `json:"login"`
+	Password string `json:"password"`
+}
+
+type RegisterInput struct {
+	Email    string `json:"email"`
+	Username string `json:"username"`
+	Password string `json:"password"`
 }
 
 func HashPassword(password string) (string, error) {
@@ -26,34 +33,6 @@ func HashPassword(password string) (string, error) {
 func CheckPasswordHash(password, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 	return err == nil
-}
-
-func UserExists(credentials Credential) bool {
-	db := config.DB
-	var count int
-
-	// Search by username if exists
-	if credentials.Username != nil {
-		query := `SELECT COUNT(*) FROM users WHERE username=$1`
-		if err := db.Get(&count, query, *credentials.Username); err != nil {
-			fmt.Printf("Database error: %v\n", err)
-			return false
-		}
-		return count > 0
-	}
-
-	// Search by username if username not exists
-	if credentials.Email != nil {
-		query := `SELECT COUNT(*) FROM users WHERE email=$1`
-		if err := db.Get(&count, query, *credentials.Email); err != nil {
-			fmt.Printf("Database error: %v\n", err)
-			return false
-		}
-		return count > 0
-	}
-
-	// return false if username and email not exits
-	return false
 }
 
 func GenerateToken(username string) (string, error) {
@@ -79,92 +58,89 @@ func ValidateToken(tokenString string) bool {
 func Login(c *gin.Context) {
 	var credentials Credential
 	var user models.User
-	db := config.DB
 
 	if err := c.ShouldBindJSON(&credentials); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		utils.HandleError(c, errors.NewError("UNPROCESSABLE_ENTITY", "Invalid json", http.StatusUnprocessableEntity))
 		return
 	}
 
-	// Validar que al menos username o email estén presentes
-	if credentials.Username == nil && credentials.Email == nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Username or email is required"})
+	if credentials.Login == "" {
+		utils.HandleError(c, errors.NewBadRequestError("Username or email is required"))
 		return
 	}
 
 	var err error
 
-	// First search by username if exists
-	if credentials.Username != nil && *credentials.Username != "" {
-		query := `SELECT * FROM users WHERE username=$1`
-		err = db.Get(&user, query, *credentials.Username)
-	} else if credentials.Email != nil && *credentials.Email != "" {
-		query := `SELECT * FROM users WHERE email=$1`
-		err = db.Get(&user, query, *credentials.Email)
-	} else {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Username or email cannot be empty"})
-		return
-	}
-
+	user, err = utils.FindUser(credentials.Login)
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
+		utils.HandleError(c, errors.NewError("UNAUTHORIZED", "Invalid credentials", http.StatusUnauthorized))
 		return
 	}
 
 	// Verify password
 	if !CheckPasswordHash(credentials.Password, user.Password) {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid credentials"})
+		utils.HandleError(c, errors.NewError("UNAUTHORIZED", "Invalid credentials", http.StatusUnauthorized))
 		return
 	}
 
 	// Generate token
-	token, err := GenerateToken(*credentials.Username)
+	token, err := GenerateToken(user.Username)
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Could not create token"})
+		utils.HandleError(c, errors.NewError("UNAUTHORIZED", "Could not create token", http.StatusUnauthorized))
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
+		"success": true,
 		"user": gin.H{
 			"id":       user.ID,
 			"username": user.Username,
 			"email":    user.Email,
-			"token":    token,
 		},
+		"token": token,
 	})
 }
 
 func Register(c *gin.Context) {
-	var credentials Credential
+	var credentials RegisterInput
 	db := config.DB
 
 	if err := c.ShouldBindJSON(&credentials); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		utils.HandleError(c, errors.NewError("UNPROCESSABLE_ENTITY", "Invalid json", http.StatusUnprocessableEntity))
 		return
 	}
 
-	if UserExists(credentials) {
-		c.JSON(http.StatusConflict, gin.H{"error": "User already exists"})
+	if _, err := utils.FindUser(credentials.Username); err != nil {
+		utils.HandleError(c, errors.NewError("CONFLICT", "User already exists", http.StatusConflict))
 		return
 	}
 
 	passwordHash, err := HashPassword(credentials.Password)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to hash password"})
+		utils.HandleError(c, errors.NewBadRequestError("Failed to hash password"))
 		return
 	}
 
-	query_create_user := `INSERT INTO users (username, email, password, created_at) values ($1, $2, $3, $4)`
+	queryCreateUser := `INSERT INTO users (username, email, password, created_at) values ($1, $2, $3, $4)`
 
-	if _, err := db.Query(query_create_user, *credentials.Username, *credentials.Email, passwordHash, time.Now()); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	if _, err := db.Query(queryCreateUser, credentials.Username, credentials.Email, passwordHash, time.Now()); err != nil {
+		utils.HandleError(c, errors.NewInternalServerError("Could not create user"))
+		return
+	}
+	//
+	// Generate token
+	token, err := GenerateToken(credentials.Username)
+	if err != nil {
+		utils.HandleError(c, errors.NewError("UNAUTHORIZED", "Could not create token", http.StatusUnauthorized))
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"user": gin.H{
-		"username": *credentials.Username,
-		"email":    *credentials.Email,
-	}})
+	c.JSON(http.StatusOK, gin.H{
+		"success": true,
+		"user": gin.H{
+			"username": credentials.Username,
+			"email":    credentials.Email,
+		},
+		"token": token,
+	})
 }
-
-func Logout(c *gin.Context) {}
