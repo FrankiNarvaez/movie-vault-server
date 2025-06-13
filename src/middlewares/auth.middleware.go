@@ -1,7 +1,9 @@
 package middlewares
 
 import (
+	"movie/src/errors"
 	"movie/src/handlers"
+	"movie/src/utils"
 	"net/http"
 	"strings"
 
@@ -12,20 +14,20 @@ func CheckAuth(c *gin.Context) {
 	authHeader := c.GetHeader("Authorization")
 
 	if authHeader == "" {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Authorization header is missing"})
+		utils.HandleError(c, errors.NewError("UNAUTHORIZED", "Authorization header is missing", http.StatusUnauthorized))
 		c.AbortWithStatus(http.StatusUnauthorized)
 		return
 	}
 
 	authToken := strings.Split(authHeader, " ")
 	if len(authToken) != 2 || authToken[0] != "Bearer" {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token format"})
+		utils.HandleError(c, errors.NewError("UNAUTHORIZED", "Invalid token format", http.StatusUnauthorized))
 		c.AbortWithStatus(http.StatusUnauthorized)
 		return
 	}
 
 	if !handlers.ValidateToken(authToken[1]) {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid or expired token"})
+		utils.HandleError(c, errors.NewError("UNAUTHORIZED", "Invalid or expired token", http.StatusUnauthorized))
 		c.AbortWithStatus(http.StatusUnauthorized)
 		return
 	}
