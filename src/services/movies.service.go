@@ -74,14 +74,10 @@ func FetchMovieCredits(movie_id, language string) (models.Movie, error) {
 	return credits, nil
 }
 
-func FetchMovieImages(movie_id, language string) (models.MediaImages, error) {
+func FetchMovieImages(movie_id string) (models.MediaImages, error) {
 	var images models.MediaImages
 
-	if language == "" {
-		language = "en-US"
-	}
-
-	url := fmt.Sprintf("/movie/%s/images?language=%s", movie_id, language)
+	url := fmt.Sprintf("/movie/%s/images", movie_id)
 
 	statusCode, err := utils.FetchFromTMDB(url, &images)
 	if err != nil {
