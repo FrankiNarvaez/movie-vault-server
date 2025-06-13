@@ -24,7 +24,7 @@ func FetchPopularMovies(language, page string) (types.Movies, error) {
 		return types.Movies{}, utils.HandleTMDBError(statusCode, "popular movies", err)
 	}
 
-	return movies, err
+	return movies, nil
 }
 
 func FetchTrendingMovies(time_window, language string) (types.Movies, error) {
