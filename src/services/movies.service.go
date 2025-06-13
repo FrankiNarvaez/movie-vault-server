@@ -141,7 +141,7 @@ func FetchMovieExternalIds(movie_id string) (types.ExternalIDs, error) {
 func FetchMovieWatchProviders(movie_id string) (models.WatchProviders, error) {
 	var providers models.WatchProviders
 
-	url := fmt.Sprintf("/movie/%s/external_ids", movie_id)
+	url := fmt.Sprintf("/movie/%s/watch/providers", movie_id)
 
 	statusCode, err := utils.FetchFromTMDB(url, &providers)
 	if err != nil {
