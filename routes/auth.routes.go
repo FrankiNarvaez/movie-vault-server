@@ -9,5 +9,4 @@ import (
 func AuthRoutes(api *gin.RouterGroup) {
 	api.POST("/login", handlers.Login)
 	api.POST("/register", handlers.Register)
-	api.DELETE("/logout", handlers.Logout)
 }
