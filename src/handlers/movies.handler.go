@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"movie/src/services"
+	"movie/src/utils"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -10,12 +11,17 @@ import (
 func GetPopularMovies(c *gin.Context) {
 	language := c.Query("language")
 	page := c.Query("page")
+
 	movies, err := services.FetchPopularMovies(language, page)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch popular movies"})
+		utils.HandleError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, movies)
+
+	c.JSON(http.StatusOK, gin.H{
+		"success": true,
+		"data":    movies,
+	})
 }
 
 func GetTrendingMovies(c *gin.Context) {
@@ -24,11 +30,14 @@ func GetTrendingMovies(c *gin.Context) {
 
 	movies, err := services.FetchTrendingMovies(time, language)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch trending movies"})
+		utils.HandleError(c, err)
 		return
 	}
 
-	c.JSON(http.StatusOK, movies)
+	c.JSON(http.StatusOK, gin.H{
+		"success": true,
+		"data":    movies,
+	})
 }
 
 func GetMovieDetails(c *gin.Context) {
@@ -37,7 +46,7 @@ func GetMovieDetails(c *gin.Context) {
 
 	movies, err := services.FetchMovieDetails(movie_id, language)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch movie details"})
+		utils.HandleError(c, err)
 		return
 	}
 	c.JSON(http.StatusOK, movies)
@@ -49,7 +58,7 @@ func GetMovieCredits(c *gin.Context) {
 
 	credtis, err := services.FetchMovieCredits(movie_id, language)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch movie credits"})
+		utils.HandleError(c, err)
 		return
 	}
 
@@ -62,7 +71,7 @@ func GetMovieImages(c *gin.Context) {
 
 	images, err := services.FetchMovieImages(movie_id, language)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch movie images"})
+		utils.HandleError(c, err)
 		return
 	}
 
@@ -75,7 +84,7 @@ func GetMovieVideos(c *gin.Context) {
 
 	images, err := services.FetchMovieVideos(movie_id, language)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch movie videos"})
+		utils.HandleError(c, err)
 		return
 	}
 
@@ -89,7 +98,7 @@ func GetMovieRecommendations(c *gin.Context) {
 
 	recommendations, err := services.FetchMovieRecommendations(movie_id, language, page)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch popular movies"})
+		utils.HandleError(c, err)
 		return
 	}
 	c.JSON(http.StatusOK, recommendations)
@@ -100,7 +109,7 @@ func GetMovieExternalIds(c *gin.Context) {
 
 	external_ids, err := services.FetchMovieExternalIds(movie_id)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch popular movies"})
+		utils.HandleError(c, err)
 		return
 	}
 	c.JSON(http.StatusOK, external_ids)
@@ -111,7 +120,7 @@ func GetMovieWatchProviders(c *gin.Context) {
 
 	providers, err := services.FetchMovieWatchProviders(movie_id)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch popular movies"})
+		utils.HandleError(c, err)
 		return
 	}
 	c.JSON(http.StatusOK, providers)
