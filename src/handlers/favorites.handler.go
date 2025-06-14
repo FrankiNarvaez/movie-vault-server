@@ -2,7 +2,9 @@ package handlers
 
 import (
 	config "movie/internal"
+	"movie/src/errors"
 	"movie/src/models"
+	"movie/src/utils"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -15,7 +17,7 @@ func GetFavorites(c *gin.Context) {
 	query := `SELECT id, user_id, imdb_id, type from favorites`
 
 	if err := db.Select(&favorites, query); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not get favorites"})
+		utils.HandleError(c, errors.NewInternalServerError("Could not get favorites"))
 		return
 	}
 
@@ -27,7 +29,7 @@ func CreateFavorite(c *gin.Context) {
 	db := config.DB
 
 	if err := c.ShouldBindJSON(&favorite); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
+		utils.HandleError(c, errors.NewBadRequestError("Invalid request body"))
 		return
 	}
 
@@ -36,7 +38,7 @@ func CreateFavorite(c *gin.Context) {
 	query := `INSERT INTO favorites (user_id, imdb_id, type) VALUES ($1, $2, $3)`
 
 	if _, err := db.Query(query, favorite.UserID, favorite.ImdbID, favorite.Type); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not add to favorites"})
+		utils.HandleError(c, errors.NewInternalServerError("Could not add to favorites"))
 		return
 	}
 
@@ -51,7 +53,7 @@ func DestroyFavorite(c *gin.Context) {
 	db := config.DB
 
 	if err := c.ShouldBindJSON(&favorite); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
+		utils.HandleError(c, errors.NewBadRequestError("Invalid request body"))
 		return
 	}
 
@@ -61,14 +63,14 @@ func DestroyFavorite(c *gin.Context) {
 	var exists int
 
 	if err := db.Get(&exists, query_search, favorite.UserID, favorite.ImdbID, favorite.Type); err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Favorite not found"})
+		utils.HandleError(c, errors.NewNotFoundError("Favorite not found"))
 		return
 	}
 
 	query_destroy := `DELETE FROM favorites WHERE user_id = $1 AND imdb_id = $2 AND type = $3;`
 
 	if _, err := db.Exec(query_destroy, favorite.UserID, favorite.ImdbID, favorite.Type); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not remove from favorites"})
+		utils.HandleError(c, errors.NewInternalServerError("Could not remove from favorites"))
 		return
 	}
 
