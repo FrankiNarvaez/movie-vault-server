@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"movie/src/services"
+	"movie/src/utils"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -23,7 +24,7 @@ func GetPopularPeople(c *gin.Context) {
 	}
 	people, err := services.FetchPopularPeople(language, page)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		utils.HandleError(c, err)
 		return
 	}
 
@@ -49,7 +50,7 @@ func GetTrendingPeople(c *gin.Context) {
 
 	people, err := services.FetchTrendingPeople(language, time_window)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch people"})
+		utils.HandleError(c, err)
 		return
 	}
 
@@ -61,7 +62,7 @@ func GetPersonDetails(c *gin.Context) {
 	language := validateQueryLanguage(c)
 	person, err := services.FetchPersonDetails(person_id, language)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch person details"})
+		utils.HandleError(c, err)
 		return
 	}
 
@@ -72,7 +73,7 @@ func GetPersonImages(c *gin.Context) {
 	person_id := c.Param("person_id")
 	images, err := services.FetchPersonImages(person_id)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch person images"})
+		utils.HandleError(c, err)
 		return
 	}
 
@@ -84,7 +85,7 @@ func GetPersonMovieCredits(c *gin.Context) {
 	language := validateQueryLanguage(c)
 	credits, err := services.FetchPersonMovieCredits(person_id, language)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch person movie credits"})
+		utils.HandleError(c, err)
 		return
 	}
 
@@ -96,7 +97,7 @@ func GetPersonCombinedCredits(c *gin.Context) {
 	language := validateQueryLanguage(c)
 	credits, err := services.FetchPersonCombinedCredits(person_id, language)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch person combined credits"})
+		utils.HandleError(c, err)
 		return
 	}
 
@@ -107,7 +108,7 @@ func GetPersonExternalIds(c *gin.Context) {
 	person_id := c.Param("person_id")
 	external_ids, err := services.FetchPersonExternalIds(person_id)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch person external ids"})
+		utils.HandleError(c, err)
 		return
 	}
 
