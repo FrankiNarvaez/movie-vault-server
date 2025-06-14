@@ -3,6 +3,7 @@ package handlers
 import (
 	"fmt"
 	"movie/src/services"
+	"movie/src/utils"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -29,7 +30,7 @@ func GetPopularTvs(c *gin.Context) {
 	page := validateQueryPage(c)
 	movies, err := services.FetchPopularSeries(language, page)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		utils.HandleError(c, err)
 		return
 	}
 	c.JSON(http.StatusOK, movies)
@@ -40,7 +41,7 @@ func GetTrendingTvs(c *gin.Context) {
 	time := c.Param("time_window")
 	movies, err := services.FetchTrendingSeries(language, time)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		utils.HandleError(c, err)
 		return
 	}
 	c.JSON(http.StatusOK, movies)
@@ -53,7 +54,7 @@ func GetSeriesDetails(c *gin.Context) {
 
 	movies, err := services.FetchSeriesDetails(series_id, language, append_to_response)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		utils.HandleError(c, err)
 		return
 	}
 	c.JSON(http.StatusOK, movies)
@@ -65,7 +66,7 @@ func GetSeriesCredits(c *gin.Context) {
 
 	movies, err := services.FetchSeriesCredits(series_id, language)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		utils.HandleError(c, err)
 		return
 	}
 	c.JSON(http.StatusOK, movies)
@@ -76,7 +77,7 @@ func GetSeriesImages(c *gin.Context) {
 
 	movies, err := services.FetchSeriesImages(series_id)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		utils.HandleError(c, err)
 		return
 	}
 	c.JSON(http.StatusOK, movies)
@@ -88,7 +89,7 @@ func GetSeriesVideos(c *gin.Context) {
 
 	movies, err := services.FetchSeriesVideos(series_id, language)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		utils.HandleError(c, err)
 		return
 	}
 	c.JSON(http.StatusOK, movies)
@@ -101,7 +102,7 @@ func GetSeriesRecommendations(c *gin.Context) {
 
 	movies, err := services.FetchSeriesRecommendations(series_id, language, page)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		utils.HandleError(c, err)
 		return
 	}
 	c.JSON(http.StatusOK, movies)
@@ -112,7 +113,7 @@ func GetSeriesExternalIds(c *gin.Context) {
 
 	movies, err := services.FetchSeriesExternalIds(series_id)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		utils.HandleError(c, err)
 		return
 	}
 	c.JSON(http.StatusOK, movies)
@@ -123,7 +124,7 @@ func GetSeriesWatchProviders(c *gin.Context) {
 
 	movies, err := services.FetchSeriesWatchProviders(series_id)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		utils.HandleError(c, err)
 		return
 	}
 	c.JSON(http.StatusOK, movies)
@@ -137,7 +138,7 @@ func GetSeasonDetails(c *gin.Context) {
 
 	movies, err := services.FetchSeasonDetails(series_id, season_number, language)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		utils.HandleError(c, err)
 		return
 	}
 	c.JSON(http.StatusOK, movies)
@@ -150,7 +151,7 @@ func GetSeasonCredits(c *gin.Context) {
 
 	movies, err := services.FetchSeasonCredits(series_id, season_number, language)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		utils.HandleError(c, err)
 		return
 	}
 	c.JSON(http.StatusOK, movies)
@@ -162,7 +163,7 @@ func GetSeasonExternalIds(c *gin.Context) {
 
 	movies, err := services.FetchSeasonExternalIds(series_id, season_number)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		utils.HandleError(c, err)
 		return
 	}
 	c.JSON(http.StatusOK, movies)
@@ -174,7 +175,7 @@ func GetSeasonImages(c *gin.Context) {
 
 	movies, err := services.FetchSeasonImages(series_id, season_number)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		utils.HandleError(c, err)
 		return
 	}
 	c.JSON(http.StatusOK, movies)
@@ -188,7 +189,7 @@ func GetSeasonVideos(c *gin.Context) {
 	movies, err := services.FetchSeasonVideos(series_id, season_number, language)
 	if err != nil {
 		fmt.Println(err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		utils.HandleError(c, err)
 		return
 	}
 	c.JSON(http.StatusOK, movies)
@@ -201,7 +202,7 @@ func GetSeasonWatchProviders(c *gin.Context) {
 
 	movies, err := services.FetchSeasonWatchProviders(series_id, season_number, language)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		utils.HandleError(c, err)
 		return
 	}
 	c.JSON(http.StatusOK, movies)
@@ -215,7 +216,7 @@ func GetEpisodeDetails(c *gin.Context) {
 
 	movies, err := services.FetchEpisodeDetails(series_id, season_number, episode_number, language)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		utils.HandleError(c, err)
 		return
 	}
 	c.JSON(http.StatusOK, movies)
@@ -229,7 +230,7 @@ func GetEpisodeCredits(c *gin.Context) {
 
 	episode, err := services.FetchEpisodeCredits(series_id, season_number, episode_number, language)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err})
+		utils.HandleError(c, err)
 		return
 	}
 
@@ -243,7 +244,7 @@ func GetEpisodeExternalIds(c *gin.Context) {
 
 	episode, err := services.FetchEpisodeExternalIds(series_id, season_number, episode_number)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err})
+		utils.HandleError(c, err)
 		return
 	}
 
@@ -257,7 +258,7 @@ func GetEpisodeImages(c *gin.Context) {
 
 	episode, err := services.FetchEpisodeImages(series_id, season_number, episode_number)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err})
+		utils.HandleError(c, err)
 		return
 	}
 
@@ -273,7 +274,7 @@ func GetEpisodeVideos(c *gin.Context) {
 
 	episode, err := services.FetchEpisodeVideos(series_id, season_number, episode_number, language)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err})
+		utils.HandleError(c, err)
 		return
 	}
 
