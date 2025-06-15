@@ -3,7 +3,6 @@ package handlers
 import (
 	"movie/src/services"
 	"movie/src/utils"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -18,10 +17,7 @@ func GetPopularMovies(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"success": true,
-		"data":    movies,
-	})
+	utils.HandleResponseOK(c, movies)
 }
 
 func GetTrendingMovies(c *gin.Context) {
@@ -34,35 +30,33 @@ func GetTrendingMovies(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"success": true,
-		"data":    movies,
-	})
+	utils.HandleResponseOK(c, movies)
 }
 
 func GetMovieDetails(c *gin.Context) {
 	movie_id := c.Param("movie_id")
 	language := c.Query("language")
 
-	movies, err := services.FetchMovieDetails(movie_id, language)
+	movie, err := services.FetchMovieDetails(movie_id, language)
 	if err != nil {
 		utils.HandleError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, movies)
+
+	utils.HandleResponseOK(c, movie)
 }
 
 func GetMovieCredits(c *gin.Context) {
 	movie_id := c.Param("movie_id")
 	language := c.Query("language")
 
-	credtis, err := services.FetchMovieCredits(movie_id, language)
+	credits, err := services.FetchMovieCredits(movie_id, language)
 	if err != nil {
 		utils.HandleError(c, err)
 		return
 	}
 
-	c.JSON(http.StatusOK, credtis)
+	utils.HandleResponseOK(c, credits)
 }
 
 func GetMovieImages(c *gin.Context) {
@@ -74,20 +68,20 @@ func GetMovieImages(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, images)
+	utils.HandleResponseOK(c, images)
 }
 
 func GetMovieVideos(c *gin.Context) {
 	movie_id := c.Param("movie_id")
 	language := c.Query("language")
 
-	images, err := services.FetchMovieVideos(movie_id, language)
+	videos, err := services.FetchMovieVideos(movie_id, language)
 	if err != nil {
 		utils.HandleError(c, err)
 		return
 	}
 
-	c.JSON(http.StatusOK, images)
+	utils.HandleResponseOK(c, videos)
 }
 
 func GetMovieRecommendations(c *gin.Context) {
@@ -100,7 +94,8 @@ func GetMovieRecommendations(c *gin.Context) {
 		utils.HandleError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, recommendations)
+
+	utils.HandleResponseOK(c, recommendations)
 }
 
 func GetMovieExternalIds(c *gin.Context) {
@@ -111,7 +106,8 @@ func GetMovieExternalIds(c *gin.Context) {
 		utils.HandleError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, external_ids)
+
+	utils.HandleResponseOK(c, external_ids)
 }
 
 func GetMovieWatchProviders(c *gin.Context) {
@@ -122,5 +118,6 @@ func GetMovieWatchProviders(c *gin.Context) {
 		utils.HandleError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, providers)
+
+	utils.HandleResponseOK(c, providers)
 }

@@ -3,7 +3,6 @@ package handlers
 import (
 	"movie/src/services"
 	"movie/src/utils"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -28,7 +27,7 @@ func GetPopularPeople(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, people)
+	utils.HandleResponseOK(c, people)
 }
 
 func validateTimeWindow(c *gin.Context) string {
@@ -54,7 +53,7 @@ func GetTrendingPeople(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, people)
+	utils.HandleResponseOK(c, people)
 }
 
 func GetPersonDetails(c *gin.Context) {
@@ -66,7 +65,7 @@ func GetPersonDetails(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, person)
+	utils.HandleResponseOK(c, person)
 }
 
 func GetPersonImages(c *gin.Context) {
@@ -77,7 +76,7 @@ func GetPersonImages(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, images)
+	utils.HandleResponseOK(c, images)
 }
 
 func GetPersonMovieCredits(c *gin.Context) {
@@ -89,7 +88,7 @@ func GetPersonMovieCredits(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, credits)
+	utils.HandleResponseOK(c, credits)
 }
 
 func GetPersonCombinedCredits(c *gin.Context) {
@@ -101,7 +100,7 @@ func GetPersonCombinedCredits(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, credits)
+	utils.HandleResponseOK(c, credits)
 }
 
 func GetPersonExternalIds(c *gin.Context) {
@@ -112,5 +111,5 @@ func GetPersonExternalIds(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, external_ids)
+	utils.HandleResponseOK(c, external_ids)
 }

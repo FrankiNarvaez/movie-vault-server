@@ -90,15 +90,13 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"success": true,
-		"user": gin.H{
-			"id":       user.ID,
-			"username": user.Username,
-			"email":    user.Email,
-		},
-		"token": token,
-	})
+	utils.HandleResponseOK(c, gin.H{
+		"id":       user.ID,
+		"username": user.Username,
+		"email":    user.Email,
+		"token":    token,
+	},
+	)
 }
 
 func Register(c *gin.Context) {
@@ -135,12 +133,9 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"success": true,
-		"user": gin.H{
-			"username": credentials.Username,
-			"email":    credentials.Email,
-		},
-		"token": token,
+	utils.HandleResponseOK(c, gin.H{
+		"username": credentials.Username,
+		"email":    credentials.Email,
+		"token":    token,
 	})
 }
