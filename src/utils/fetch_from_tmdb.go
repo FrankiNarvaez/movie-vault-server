@@ -64,3 +64,11 @@ func ValidateQueryPage(c *gin.Context) string {
 	}
 	return page
 }
+
+func ValidateIncludeAdult(c *gin.Context) bool {
+	include_adult := c.Query("include_adult")
+	if include_adult == "" {
+		include_adult = "false"
+	}
+	return include_adult == "true"
+}
