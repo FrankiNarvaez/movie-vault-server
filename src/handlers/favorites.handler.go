@@ -5,7 +5,6 @@ import (
 	"movie/src/errors"
 	"movie/src/models"
 	"movie/src/utils"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -21,7 +20,7 @@ func GetFavorites(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, favorites)
+	utils.HandleResponseOK(c, favorites)
 }
 
 func CreateFavorite(c *gin.Context) {
@@ -42,10 +41,7 @@ func CreateFavorite(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"message": "Successfully added to favorites",
-		"data":    favorite,
-	})
+	utils.HandleResponseOK(c, favorite)
 }
 
 func DestroyFavorite(c *gin.Context) {
@@ -74,5 +70,5 @@ func DestroyFavorite(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Successfully removed from favorites"})
+	utils.HandleResponseOK(c, nil)
 }

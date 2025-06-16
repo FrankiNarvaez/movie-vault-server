@@ -16,12 +16,21 @@ CREATE TABLE favorites (
 	id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 	user_id UUID REFERENCES users(id) ON DELETE CASCADE,
 	imdb_id VARCHAR NOT NULL,
-	type VARCHAR(10) NOT NULL
+	type VARCHAR(10) NOT NULL,
+	created_at TIMESTAMP
+);
+
+CREATE TABLE watchlists (
+	id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+	user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+	imdb_id VARCHAR NOT NULL,
+	type VARCHAR(10) NOT NULL,
+	created_at TIMESTAMP
 );
 	`
 
 const DROP_SCHEMA = `
 	DROP TABLE favorites;
-	DROP TABLE watch_lists;
+	DROP TABLE watchlists;
 	DROP TABLE users;
 	`
