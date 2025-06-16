@@ -8,36 +8,20 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func ValidateQueryLanguage(c *gin.Context) string {
-	language := c.Query("language")
-	if language == "" {
-		language = "en-US" // default language
-	}
-	return language
-}
-
-func validateQueryPage(c *gin.Context) string {
-	page := c.Query("page")
-	if page == "" {
-		page = "1"
-	}
-	return page
-}
-
 func GetPopularTvs(c *gin.Context) {
-	language := ValidateQueryLanguage(c)
-	page := validateQueryPage(c)
-	series, err := services.FetchPopularSeries(language, page)
+	language := utils.ValidateQueryLanguage(c)
+	page := utils.ValidateQueryPage(c)
+	movies, err := services.FetchPopularSeries(language, page)
 	if err != nil {
 		utils.HandleError(c, err)
 		return
 	}
 
-	utils.HandleResponseOK(c, series)
+	utils.HandleResponseOK(c, movies)
 }
 
 func GetTrendingTvs(c *gin.Context) {
-	language := ValidateQueryLanguage(c)
+	language := utils.ValidateQueryLanguage(c)
 	time := c.Param("time_window")
 	series, err := services.FetchTrendingSeries(language, time)
 	if err != nil {
@@ -50,7 +34,7 @@ func GetTrendingTvs(c *gin.Context) {
 
 func GetSeriesDetails(c *gin.Context) {
 	series_id := c.Param("series_id")
-	language := ValidateQueryLanguage(c)
+	language := utils.ValidateQueryLanguage(c)
 	append_to_response := c.Query("append_to_response")
 
 	serie, err := services.FetchSeriesDetails(series_id, language, append_to_response)
@@ -64,7 +48,7 @@ func GetSeriesDetails(c *gin.Context) {
 
 func GetSeriesCredits(c *gin.Context) {
 	series_id := c.Param("series_id")
-	language := ValidateQueryLanguage(c)
+	language := utils.ValidateQueryLanguage(c)
 
 	credits, err := services.FetchSeriesCredits(series_id, language)
 	if err != nil {
@@ -89,7 +73,7 @@ func GetSeriesImages(c *gin.Context) {
 
 func GetSeriesVideos(c *gin.Context) {
 	series_id := c.Param("series_id")
-	language := ValidateQueryLanguage(c)
+	language := utils.ValidateQueryLanguage(c)
 
 	videos, err := services.FetchSeriesVideos(series_id, language)
 	if err != nil {
@@ -102,8 +86,8 @@ func GetSeriesVideos(c *gin.Context) {
 
 func GetSeriesRecommendations(c *gin.Context) {
 	series_id := c.Param("series_id")
-	language := ValidateQueryLanguage(c)
-	page := validateQueryPage(c)
+	language := utils.ValidateQueryLanguage(c)
+	page := utils.ValidateQueryPage(c)
 
 	recommendations, err := services.FetchSeriesRecommendations(series_id, language, page)
 	if err != nil {
@@ -142,7 +126,7 @@ func GetSeriesWatchProviders(c *gin.Context) {
 func GetSeasonDetails(c *gin.Context) {
 	series_id := c.Param("series_id")
 	season_number := c.Param("season_number")
-	language := ValidateQueryLanguage(c)
+	language := utils.ValidateQueryLanguage(c)
 
 	season, err := services.FetchSeasonDetails(series_id, season_number, language)
 	if err != nil {
@@ -156,7 +140,7 @@ func GetSeasonDetails(c *gin.Context) {
 func GetSeasonCredits(c *gin.Context) {
 	series_id := c.Param("series_id")
 	season_number := c.Param("season_number")
-	language := ValidateQueryLanguage(c)
+	language := utils.ValidateQueryLanguage(c)
 
 	credits, err := services.FetchSeasonCredits(series_id, season_number, language)
 	if err != nil {
@@ -196,7 +180,7 @@ func GetSeasonImages(c *gin.Context) {
 func GetSeasonVideos(c *gin.Context) {
 	series_id := c.Param("series_id")
 	season_number := c.Param("season_number")
-	language := ValidateQueryLanguage(c)
+	language := utils.ValidateQueryLanguage(c)
 
 	videos, err := services.FetchSeasonVideos(series_id, season_number, language)
 	if err != nil {
@@ -211,7 +195,7 @@ func GetSeasonVideos(c *gin.Context) {
 func GetSeasonWatchProviders(c *gin.Context) {
 	series_id := c.Param("series_id")
 	season_number := c.Param("season_number")
-	language := ValidateQueryLanguage(c)
+	language := utils.ValidateQueryLanguage(c)
 
 	watch_providers, err := services.FetchSeasonWatchProviders(series_id, season_number, language)
 	if err != nil {
@@ -226,7 +210,7 @@ func GetEpisodeDetails(c *gin.Context) {
 	series_id := c.Param("series_id")
 	season_number := c.Param("season_number")
 	episode_number := c.Param("episode_number")
-	language := ValidateQueryLanguage(c)
+	language := utils.ValidateQueryLanguage(c)
 
 	episode, err := services.FetchEpisodeDetails(series_id, season_number, episode_number, language)
 	if err != nil {
@@ -241,7 +225,7 @@ func GetEpisodeCredits(c *gin.Context) {
 	series_id := c.Param("series_id")
 	season_number := c.Param("season_number")
 	episode_number := c.Param("episode_number")
-	language := ValidateQueryLanguage(c)
+	language := utils.ValidateQueryLanguage(c)
 
 	credits, err := services.FetchEpisodeCredits(series_id, season_number, episode_number, language)
 	if err != nil {
@@ -284,7 +268,7 @@ func GetEpisodeVideos(c *gin.Context) {
 	series_id := c.Param("series_id")
 	season_number := c.Param("season_number")
 	episode_number := c.Param("episode_number")
-	language := ValidateQueryLanguage(c)
+	language := utils.ValidateQueryLanguage(c)
 
 	videos, err := services.FetchEpisodeVideos(series_id, season_number, episode_number, language)
 	if err != nil {
