@@ -8,16 +8,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func validateQueryLanguage(c *gin.Context) string {
-	language := c.Query("language")
-	if language == "" {
-		language = "en-US" // default language
-	}
-	return language
-}
-
 func GetPopularPeople(c *gin.Context) {
-	language := validateQueryLanguage(c)
+	language := utils.ValidateQueryLanguage(c)
 	page := c.Query("page")
 	if page == "" {
 		page = "1"
@@ -45,7 +37,7 @@ func validateTimeWindow(c *gin.Context) string {
 }
 
 func GetTrendingPeople(c *gin.Context) {
-	language := validateQueryLanguage(c)
+	language := utils.ValidateQueryLanguage(c)
 	time_window := validateTimeWindow(c)
 
 	people, err := services.FetchTrendingPeople(language, time_window)
@@ -59,7 +51,7 @@ func GetTrendingPeople(c *gin.Context) {
 
 func GetPersonDetails(c *gin.Context) {
 	person_id := c.Param("person_id")
-	language := validateQueryLanguage(c)
+	language := utils.ValidateQueryLanguage(c)
 	person, err := services.FetchPersonDetails(person_id, language)
 	if err != nil {
 		utils.HandleError(c, err)
@@ -82,7 +74,7 @@ func GetPersonImages(c *gin.Context) {
 
 func GetPersonMovieCredits(c *gin.Context) {
 	person_id := c.Param("person_id")
-	language := validateQueryLanguage(c)
+	language := utils.ValidateQueryLanguage(c)
 	credits, err := services.FetchPersonMovieCredits(person_id, language)
 	if err != nil {
 		utils.HandleError(c, err)
@@ -94,7 +86,7 @@ func GetPersonMovieCredits(c *gin.Context) {
 
 func GetPersonCombinedCredits(c *gin.Context) {
 	person_id := c.Param("person_id")
-	language := validateQueryLanguage(c)
+	language := utils.ValidateQueryLanguage(c)
 	credits, err := services.FetchPersonCombinedCredits(person_id, language)
 	if err != nil {
 		utils.HandleError(c, err)
