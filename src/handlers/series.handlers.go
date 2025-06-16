@@ -17,7 +17,7 @@ func GetPopularTvs(c *gin.Context) {
 		return
 	}
 
-	utils.HandleResponseOK(c, series)
+	utils.HandleResponseOK(c, movies)
 }
 
 func GetTrendingTvs(c *gin.Context) {
