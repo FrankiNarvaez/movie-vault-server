@@ -64,11 +64,6 @@ type Collection struct {
 	BackdropPath string `json:"backdrop_path"`
 }
 
-type Genre struct {
-	ID   int    `json:"id"`
-	Name string `json:"name"`
-}
-
 type ProductionCompany struct {
 	ID            int     `json:"id"`
 	LogoPath      *string `json:"logo_path"`

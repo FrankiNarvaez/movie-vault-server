@@ -14,5 +14,6 @@ func RegisterRoutes(router *gin.Engine) {
 		FavoriteRoutes(api)
 		WatchListRoutes(api)
 		SearchRoutes(api)
+		GenresRoutes(api)
 	}
 }
