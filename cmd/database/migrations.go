@@ -8,35 +8,57 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func hasTables(db *sqlx.DB) bool {
-	var count int
-	query := `
-		SELECT COUNT(*) 
-		FROM information_schema.tables 
-		WHERE table_schema = 'public';
+func dropAllTables(db *sqlx.DB) error {
+	log.Println("[!] Dropping entire public schema...")
+
+	dropSchemaQuery := `
+		DROP SCHEMA public CASCADE;
+		CREATE SCHEMA public;
 	`
 
-	if err := db.Get(&count, query); err != nil {
-		log.Fatalf("[!!] Error to verify the tables amount: %v", err)
+	if _, err := db.Exec(dropSchemaQuery); err != nil {
+		return err
 	}
 
-	return count > 0
+	log.Println("[✓] Public schema dropped and recreated successfully")
+	return nil
+}
+
+func createTables(db *sqlx.DB) error {
+	log.Println("[!] Creating tables...")
+
+	tx, err := db.Beginx()
+	if err != nil {
+		return err
+	}
+	defer func() {
+		if err != nil {
+			tx.Rollback()
+		}
+	}()
+
+	if _, err = tx.Exec(database.SCHEMA); err != nil {
+		return err
+	}
+
+	if err = tx.Commit(); err != nil {
+		return err
+	}
+
+	log.Println("[✓] Tables created successfully")
+	return nil
 }
 
 func Migrate(db *sqlx.DB) {
-	if hasTables(db) {
-		log.Println("[!] dropping existing tables...")
-
-		if _, err := db.Exec(database.DROP_SCHEMA); err != nil {
-			log.Printf("[!!] Error to drop tables: %v", err)
-		}
+	// Directamente elimina todo el schema público
+	if err := dropAllTables(db); err != nil {
+		log.Fatalf("[!!] Error dropping schema: %v", err)
 	}
 
-	log.Println("[!] creating tables...")
-
-	if _, err := db.Exec(database.SCHEMA); err != nil {
-		log.Printf("[!!] Error to create tables: %v", err)
-		return
+	// Crea tablas
+	if err := createTables(db); err != nil {
+		log.Fatalf("[!!] Error creating tables: %v", err)
 	}
-	log.Println("[!] Tables created...")
+
+	log.Println("[✓] Migration completed successfully")
 }
