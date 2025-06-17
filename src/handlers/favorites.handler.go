@@ -5,7 +5,6 @@ import (
 	"movie/src/errors"
 	"movie/src/models"
 	"movie/src/utils"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -15,7 +14,7 @@ func GetFavorites(c *gin.Context) {
 	db := config.DB
 	user, err := utils.GetUserFromContext(c)
 	if err != nil {
-		utils.HandleError(c, errors.NewError("UNAUTHORIZED", err.Error(), http.StatusUnauthorized))
+		utils.HandleError(c, errors.NewUnauthorizedError(err.Error()))
 		return
 	}
 
@@ -34,7 +33,7 @@ func CreateFavorite(c *gin.Context) {
 	db := config.DB
 	user, err := utils.GetUserFromContext(c)
 	if err != nil {
-		utils.HandleError(c, errors.NewError("UNAUTHORIZED", err.Error(), http.StatusUnauthorized))
+		utils.HandleError(c, errors.NewUnauthorizedError(err.Error()))
 		return
 	}
 
@@ -60,7 +59,7 @@ func DestroyFavorite(c *gin.Context) {
 	db := config.DB
 	user, err := utils.GetUserFromContext(c)
 	if err != nil {
-		utils.HandleError(c, errors.NewError("UNAUTHORIZED", err.Error(), http.StatusUnauthorized))
+		utils.HandleError(c, errors.NewUnauthorizedError(err.Error()))
 		return
 	}
 
