@@ -31,7 +31,12 @@ func main() {
 	}
 
 	godotenv.Load()
+	config.ConnectDB()
 	db := config.DB
+	if db == nil {
+		fmt.Println("Error: Database connection is nil. Check your database configuration.")
+		return
+	}
 	defer db.Close()
 
 	actions := map[string]func(){
