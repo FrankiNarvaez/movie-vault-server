@@ -14,7 +14,7 @@ func GetWatchlists(c *gin.Context) {
 	db := config.DB
 	user, err := utils.GetUserFromContext(c)
 	if err != nil {
-		utils.HandleError(c, errors.NewUnauthoriedError(err.Error()))
+		utils.HandleError(c, errors.NewUnauthorizedError(err.Error()))
 		return
 	}
 
@@ -38,7 +38,7 @@ func CreateWatchlist(c *gin.Context) {
 
 	user, err := utils.GetUserFromContext(c)
 	if err != nil {
-		utils.HandleError(c, errors.NewUnauthoriedError(err.Error()))
+		utils.HandleError(c, errors.NewUnauthorizedError(err.Error()))
 		return
 	}
 
@@ -61,7 +61,7 @@ func DestroyWatchlist(c *gin.Context) {
 
 	_, err := utils.GetUserFromContext(c)
 	if err != nil {
-		utils.HandleError(c, errors.NewUnauthoriedError(err.Error()))
+		utils.HandleError(c, errors.NewUnauthorizedError(err.Error()))
 		return
 	}
 
@@ -87,7 +87,7 @@ func GetItemsWatchlist(c *gin.Context) {
 	db := config.DB
 	_, err := utils.GetUserFromContext(c)
 	if err != nil {
-		utils.HandleError(c, errors.NewUnauthoriedError(err.Error()))
+		utils.HandleError(c, errors.NewUnauthorizedError(err.Error()))
 		return
 	}
 
@@ -108,7 +108,7 @@ func CreateItemWatchlist(c *gin.Context) {
 	db := config.DB
 	user, err := utils.GetUserFromContext(c)
 	if err != nil {
-		utils.HandleError(c, errors.NewUnauthoriedError(err.Error()))
+		utils.HandleError(c, errors.NewUnauthorizedError(err.Error()))
 		return
 	}
 
@@ -137,7 +137,7 @@ func DestroyItemWatchlist(c *gin.Context) {
 
 	_, err := utils.GetUserFromContext(c)
 	if err != nil {
-		utils.HandleError(c, errors.NewUnauthoriedError(err.Error()))
+		utils.HandleError(c, errors.NewUnauthorizedError(err.Error()))
 		return
 	}
 	querySearch := `SELECT 1 FROM item_watchlists WHERE watchlist_id=$1 AND id=$2`
