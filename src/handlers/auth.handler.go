@@ -138,7 +138,7 @@ func Register(c *gin.Context) {
 
 	queryCreateUser := `INSERT INTO users (username, email, password, created_at)
 	values ($1, $2, $3, $4)
-	RETURNIG *`
+	RETURNING *`
 
 	var user models.User
 	if err := db.Get(&user, queryCreateUser, credentials.Username, credentials.Email, passwordHash, time.Now()); err != nil {
