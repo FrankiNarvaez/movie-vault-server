@@ -54,3 +54,11 @@ func NewExternalAPIError(message string) CustomError {
 		Type:       "EXTERNAL_API_ERROR",
 	}
 }
+
+func NewUnauthorizedError(message string) CustomError {
+	return CustomError{
+		StatusCode: http.StatusUnauthorized,
+		Message:    message,
+		Type:       "UNAUTHORIZED",
+	}
+}
