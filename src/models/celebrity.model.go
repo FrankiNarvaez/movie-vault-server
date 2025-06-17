@@ -9,7 +9,7 @@ type Person struct {
 	Gender             int32     `json:"gender"`
 	Homepage           *string   `json:"homepage"`
 	ID                 uint32    `json:"id"`
-	ImdbId             *string   `json:"imdb_id"`
+	TmdbId             *string   `json:"tmdb_id"`
 	KnownForDepartment string    `json:"known_for_department"`
 	Name               string    `json:"name"`
 	OriginalName       *string   `json:"original_name"`

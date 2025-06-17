@@ -5,7 +5,7 @@ type ExternalIDs struct {
 	Freebase_mid *string `json:"freebase_mid,omitempty"`
 	Freebase_sid *string `json:"freebase_sid,omitempty"`
 	Freebase_id  *string `json:"freebase_id,omitempty"`
-	Imdb_id      *string `json:"imdb_id,omitempty"`
+	Tmdb_id      *string `json:"tmdb_id,omitempty"`
 	Tvrage_id    *int64  `json:"tvrage_id,omitempty"`
 	TvdbId       *int64  `json:"tvdb_id,omitempty"`
 	Wikidata_id  *string `json:"wikidata_id,omitempty"`
