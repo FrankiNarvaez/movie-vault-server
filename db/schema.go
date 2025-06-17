@@ -15,7 +15,7 @@ CREATE TABLE users (
 CREATE TABLE favorites (
 	id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 	user_id UUID REFERENCES users(id) ON DELETE CASCADE,
-	imdb_id VARCHAR NOT NULL,
+	tmdb_id VARCHAR NOT NULL,
 	type VARCHAR(10) NOT NULL,
 	created_at TIMESTAMP
 );
@@ -30,15 +30,15 @@ CREATE TABLE watchlists (
 CREATE TABLE item_watchlists (
 	id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 	user_id UUID REFERENCES watchlists(id) ON DELETE CASCADE,
-	imdb_id VARCHAR NOT NULL,
+	tmdb_id VARCHAR NOT NULL,
 	type VARCHAR(10) NOT NULL,
 	status INTEGER NOT NULL DEFAULT 0,
 	created_at TIMESTAMP
 );
 
 CREATE INDEX IF NOT EXISTS idx_favorites_user_id ON favorites(user_id);
-CREATE INDEX IF NOT EXISTS idx_favorites_imdb_id ON favorites(imdb_id);
+CREATE INDEX IF NOT EXISTS idx_favorites_tmdb_id ON favorites(tmdb_id);
 CREATE INDEX IF NOT EXISTS idx_watchlists_user_id ON watchlists(user_id);
 CREATE INDEX IF NOT EXISTS idx_item_watchlists_user_id ON item_watchlists(user_id);
-CREATE INDEX IF NOT EXISTS idx_item_watchlists_imdb_id ON item_watchlists(imdb_id);
+CREATE INDEX IF NOT EXISTS idx_item_watchlists_tmdb_id ON item_watchlists(tmdb_id);
 	`

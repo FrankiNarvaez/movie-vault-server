@@ -39,7 +39,7 @@ INSERT INTO users (id, username, email, password, remember_at, created_at) VALUE
 );
 
 -- Insert favorites
-INSERT INTO favorites (id, user_id, imdb_id, type, created_at) VALUES
+INSERT INTO favorites (id, user_id, tmdb_id, type, created_at) VALUES
 (
     '660e8400-e29b-41d4-a716-446655440001',
     '550e8400-e29b-41d4-a716-446655440001',
@@ -152,7 +152,7 @@ INSERT INTO watchlists (id, user_id, name, created_at) VALUES
 
 -- Insert watchlist items
 -- Note: Based on your schema, user_id references watchlists(id), so I'm using watchlist IDs
-INSERT INTO item_watchlists (id, user_id, imdb_id, type, status, created_at) VALUES
+INSERT INTO item_watchlists (id, user_id, tmdb_id, type, status, created_at) VALUES
 (
     '880e8400-e29b-41d4-a716-446655440001',
     '770e8400-e29b-41d4-a716-446655440001', -- Must Watch Movies 2024
