@@ -8,7 +8,18 @@ import (
 )
 
 func WatchListRoutes(api *gin.RouterGroup) {
-	api.GET("/watchlist", middlewares.CheckAuth, handlers.GetFromWatchLists)
-	api.POST("/watchlist/:imdb_id", middlewares.CheckAuth, handlers.CreateAtWatchList)
-	api.DELETE("/watchlist/:imdb_id", middlewares.CheckAuth, handlers.DeleteFromWatchList)
+	watchlists := api.Group("watchlists")
+	{
+		watchlists.GET("", middlewares.CheckAuth, handlers.GetWatchlists)
+		watchlists.POST("/:watchlist_id", middlewares.CheckAuth, handlers.CreateWatchlist)
+		watchlists.DELETE("/:watchlist_id", middlewares.CheckAuth, handlers.DestroyWatchlist)
+
+		items := watchlists.Group("/:watchlist_id/items")
+		{
+			items.GET("", handlers.GetItemsWatchlist)
+			items.POST("/:item_id", handlers.CreateItemWatchlist)
+			items.PATCH("/:item_id", handlers.UpdateItemWatchlist)
+			items.DELETE("/:item_id", handlers.DestroyItemWatchlist)
+		}
+	}
 }
