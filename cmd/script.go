@@ -3,8 +3,11 @@ package main
 import (
 	"fmt"
 	"movie/cmd/database"
+	config "movie/internal"
 	"os"
 	"slices"
+
+	"github.com/joho/godotenv"
 )
 
 var helpMessage = `Usage: go run cmd/database/script.go [options]
@@ -27,7 +30,8 @@ func main() {
 		return
 	}
 
-	db := database.Connect()
+	godotenv.Load()
+	db := config.DB
 	defer db.Close()
 
 	actions := map[string]func(){
