@@ -20,19 +20,6 @@ func GetPopularMovies(c *gin.Context) {
 	utils.HandleResponseOK(c, movies)
 }
 
-func GetTrendingMovies(c *gin.Context) {
-	time := c.Param("time_window")
-	language := c.Query("language")
-
-	movies, err := services.FetchTrendingMovies(time, language)
-	if err != nil {
-		utils.HandleError(c, err)
-		return
-	}
-
-	utils.HandleResponseOK(c, movies)
-}
-
 func GetMovieDetails(c *gin.Context) {
 	movie_id := c.Param("movie_id")
 	language := c.Query("language")
