@@ -37,7 +37,7 @@ type DiscoverMovie struct {
 	GenreIds         []int   `json:"genre_ids"`
 	ID               int     `json:"id"`
 	OriginalLanguage string  `json:"original_language"`
-	OriginalTitle    string  `json:"original_tile"`
+	OriginalTitle    string  `json:"original_title"`
 	Overview         string  `json:"overview"`
 	Popularity       float64 `json:"popularity"`
 	PosterPath       string  `json:"poster_path"`
