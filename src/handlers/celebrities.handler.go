@@ -9,10 +9,8 @@ import (
 
 func GetPopularCelebrities(c *gin.Context) {
 	language := utils.ValidateQueryLanguage(c)
-	page := c.Query("page")
-	if page == "" {
-		page = "1"
-	}
+	page := utils.ValidateQueryPage(c)
+
 	celebrities, err := services.FetchPopularCelebrities(language, page)
 	if err != nil {
 		utils.HandleError(c, err)
@@ -20,19 +18,6 @@ func GetPopularCelebrities(c *gin.Context) {
 	}
 
 	utils.HandleResponseOK(c, celebrities)
-}
-
-func validateTimeWindow(c *gin.Context) string {
-	time_window := c.Param("time_window")
-	if time_window == "" {
-		time_window = "day"
-	}
-
-	if time_window != "day" && time_window != "week" {
-		time_window = "day"
-	}
-
-	return time_window
 }
 
 func GetCelebrityDetails(c *gin.Context) {

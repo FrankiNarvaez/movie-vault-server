@@ -10,7 +10,6 @@ func SerieRoutes(api *gin.RouterGroup) {
 	series := api.Group("/series")
 
 	series.GET("/popular", handlers.GetPopularSeries)
-	series.GET("/trending/:time_window", handlers.GetTrendingSeries)
 
 	seriesById := series.Group("/:series_id")
 	{
