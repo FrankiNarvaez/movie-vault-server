@@ -34,3 +34,28 @@ type Provider struct {
 	ProviderName    string `json:"provider_name"`
 	DisplayPriority int    `json:"display_priority"`
 }
+
+type TrendingResults struct {
+	Pages        int64            `json:"pages"`
+	Results      []TrendingRusult `json:"results"`
+	TotalPages   int64            `json:"total_pages"`
+	TotalResults int64            `json:"total_results"`
+}
+
+type TrendingRusult struct {
+	Adult            bool     `json:"adult"`
+	BackdropPath     string   `json:"backdrop_path"`
+	ID               int      `json:"id"`
+	Name             string   `json:"name"`
+	OriginalLanguage string   `json:"original_language"`
+	OriginalName     string   `json:"original_name"`
+	Overview         string   `json:"overview"`
+	PosterPath       string   `json:"poster_path"`
+	MediaType        string   `json:"media_type"`
+	GenreIds         []int    `json:"genre_ids"`
+	Popularity       float64  `json:"popularity"`
+	FirstAirDate     string   `json:"first_air_date"`
+	VoteAverage      float64  `json:"vote_average"`
+	VoteCount        int      `json:"vote_count"`
+	OriginCountry    []string `json:"origin_country"`
+}
