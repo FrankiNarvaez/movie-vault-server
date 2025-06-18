@@ -151,8 +151,8 @@ INSERT INTO watchlists (id, user_id, name, created_at) VALUES
 );
 
 -- Insert watchlist items
--- Note: Based on your schema, user_id references watchlists(id), so I'm using watchlist IDs
-INSERT INTO item_watchlists (id, user_id, tmdb_id, type, status, created_at) VALUES
+-- Note: Based on your schema, watchlist_id references watchlists(id), so I'm using watchlist IDs
+INSERT INTO item_watchlists (id, watchlist_id, tmdb_id, type, status, created_at) VALUES
 (
     '880e8400-e29b-41d4-a716-446655440001',
     '770e8400-e29b-41d4-a716-446655440001', -- Must Watch Movies 2024
