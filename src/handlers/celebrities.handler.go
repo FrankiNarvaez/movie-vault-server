@@ -35,19 +35,6 @@ func validateTimeWindow(c *gin.Context) string {
 	return time_window
 }
 
-func GetTrendingPeople(c *gin.Context) {
-	language := utils.ValidateQueryLanguage(c)
-	time_window := validateTimeWindow(c)
-
-	people, err := services.FetchTrendingPeople(language, time_window)
-	if err != nil {
-		utils.HandleError(c, err)
-		return
-	}
-
-	utils.HandleResponseOK(c, people)
-}
-
 func GetPersonDetails(c *gin.Context) {
 	person_id := c.Param("person_id")
 	language := utils.ValidateQueryLanguage(c)
