@@ -8,8 +8,8 @@ import (
 )
 
 func GetPopularMovies(c *gin.Context) {
-	language := c.Query("language")
-	page := c.Query("page")
+	language := utils.ValidateQueryLanguage(c)
+	page := utils.ValidateQueryPage(c)
 
 	movies, err := services.FetchPopularMovies(language, page)
 	if err != nil {
@@ -22,7 +22,7 @@ func GetPopularMovies(c *gin.Context) {
 
 func GetMovieDetails(c *gin.Context) {
 	movie_id := c.Param("movie_id")
-	language := c.Query("language")
+	language := utils.ValidateQueryLanguage(c)
 
 	movie, err := services.FetchMovieDetails(movie_id, language)
 	if err != nil {
@@ -35,7 +35,7 @@ func GetMovieDetails(c *gin.Context) {
 
 func GetMovieCredits(c *gin.Context) {
 	movie_id := c.Param("movie_id")
-	language := c.Query("language")
+	language := utils.ValidateQueryLanguage(c)
 
 	credits, err := services.FetchMovieCredits(movie_id, language)
 	if err != nil {
@@ -60,7 +60,7 @@ func GetMovieImages(c *gin.Context) {
 
 func GetMovieVideos(c *gin.Context) {
 	movie_id := c.Param("movie_id")
-	language := c.Query("language")
+	language := utils.ValidateQueryLanguage(c)
 
 	videos, err := services.FetchMovieVideos(movie_id, language)
 	if err != nil {
@@ -73,8 +73,8 @@ func GetMovieVideos(c *gin.Context) {
 
 func GetMovieRecommendations(c *gin.Context) {
 	movie_id := c.Param("movie_id")
-	language := c.Query("language")
-	page := c.Query("page")
+	language := utils.ValidateQueryLanguage(c)
+	page := utils.ValidateQueryPage(c)
 
 	recommendations, err := services.FetchMovieRecommendations(movie_id, language, page)
 	if err != nil {
