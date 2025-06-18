@@ -23,7 +23,7 @@ func FetchDiscoverSeries(includeAdult, includeNullFirstAirDates bool, language, 
 	url := fmt.Sprintf("/discover/tv?include_adult=%t&include_video=%t&language=%s&page=%s&sort_by=%s&with_companies=%s&with_genres=%s&with_networks=%s", includeAdult, includeNullFirstAirDates, language, page, sortBy, withCompanies, withGenres, withNetworks)
 	statusCode, err := utils.FetchFromTMDB(url, &series)
 	if err != nil {
-		return nil, utils.HandleTMDBError(statusCode, "discover movies", err)
+		return nil, utils.HandleTMDBError(statusCode, "discover series", err)
 	}
 	return &series, nil
 }
