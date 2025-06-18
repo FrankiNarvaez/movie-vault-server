@@ -6,32 +6,34 @@ import (
 	"movie/src/utils"
 )
 
-func FetchAllTrendings(time_window, language string) (types.TrendingResults, error) {
+func FetchAllTrendings(timeWindow, language string) (types.TrendingResults, error) {
 	var results types.TrendingResults
+
+	url := fmt.Sprintf("/trending/all/%s?language=%s", timeWindow, language)
+	statusCode, err := utils.FetchFromTMDB(url, &results)
+	if err != nil {
+		return types.TrendingResults{}, utils.HandleTMDBError(statusCode, "trending all", err)
+	}
 
 	return results, nil
 }
 
-func FetchTrendingMovies(time_window, language string) (types.Movies, error) {
-	var movies types.Movies
+func FetchTrendingMovies(timeWindow, language string) (types.TrendingResults, error) {
+	var movies types.TrendingResults
 
-	if language == "" {
-		language = "en-US"
-	}
-
-	url := fmt.Sprintf("/trending/movie/%s?language=%s", time_window, language)
+	url := fmt.Sprintf("/trending/movie/%s?language=%s", timeWindow, language)
 
 	statusCode, err := utils.FetchFromTMDB(url, &movies)
 	if err != nil {
-		return types.Movies{}, utils.HandleTMDBError(statusCode, "trending movies", err)
+		return types.TrendingResults{}, utils.HandleTMDBError(statusCode, "trending movies", err)
 	}
 
 	return movies, nil
 }
 
-func FetchTrendingCelebrities(language string, time_window string) (types.TrendingCelebrities, error) {
+func FetchTrendingCelebrities(timeWindow, language string) (types.TrendingCelebrities, error) {
 	var celebrities types.TrendingCelebrities
-	url := fmt.Sprintf("/trending/person/%s?language=%s", time_window, language)
+	url := fmt.Sprintf("/trending/person/%s?language=%s", timeWindow, language)
 
 	status, err := utils.FetchFromTMDB(url, &celebrities)
 	if err != nil {
@@ -41,9 +43,9 @@ func FetchTrendingCelebrities(language string, time_window string) (types.Trendi
 	return celebrities, nil
 }
 
-func FetchTrendingSeries(language, time string) (types.TrendingResults, error) {
+func FetchTrendingSeries(timeWindow, language string) (types.TrendingResults, error) {
 	var series types.TrendingResults
-	url := fmt.Sprintf("/trending/tv/%s?language=%s", time, language)
+	url := fmt.Sprintf("/trending/tv/%s?language=%s", timeWindow, language)
 
 	if status, err := utils.FetchFromTMDB(url, &series); err != nil {
 		return types.TrendingResults{}, utils.HandleTMDBError(status, "trending series", err)

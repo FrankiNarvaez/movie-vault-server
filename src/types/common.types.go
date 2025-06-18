@@ -37,12 +37,12 @@ type Provider struct {
 
 type TrendingResults struct {
 	Pages        int64            `json:"pages"`
-	Results      []TrendingRusult `json:"results"`
+	Results      []TrendingResult `json:"results"`
 	TotalPages   int64            `json:"total_pages"`
 	TotalResults int64            `json:"total_results"`
 }
 
-type TrendingRusult struct {
+type TrendingResult struct {
 	Adult            bool     `json:"adult"`
 	BackdropPath     string   `json:"backdrop_path"`
 	ID               int      `json:"id"`

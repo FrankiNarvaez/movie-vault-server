@@ -30,7 +30,8 @@ func ValidateIncludeAdult(c *gin.Context) bool {
 	return include_adult == "true"
 }
 
-func ValidateTimeWindow(timeWindow string) (string, error) {
+func ValidateTimeWindow(c *gin.Context) (string, error) {
+	timeWindow := c.Param("time_window")
 	if timeWindow == "" {
 		return "day", nil
 	}
