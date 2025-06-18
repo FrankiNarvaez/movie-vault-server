@@ -16,5 +16,6 @@ func RegisterRoutes(router *gin.Engine) {
 		SearchRoutes(api)
 		GenresRoutes(api)
 		TrendingRoutes(api)
+		DiscoverRoutes(api)
 	}
 }

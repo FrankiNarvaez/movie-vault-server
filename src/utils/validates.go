@@ -30,6 +30,15 @@ func ValidateIncludeAdult(c *gin.Context) bool {
 	return include_adult == "true"
 }
 
+func ValidateQueryInclude(c *gin.Context, query string) bool {
+	include := c.Query(query)
+	if include == "" {
+		include = "false"
+	}
+
+	return include == "true"
+}
+
 func ValidateTimeWindow(c *gin.Context) (string, error) {
 	timeWindow := c.Param("time_window")
 	if timeWindow == "" {
@@ -41,4 +50,13 @@ func ValidateTimeWindow(c *gin.Context) (string, error) {
 	}
 
 	return timeWindow, nil
+}
+
+func ValidateQuerySortBy(c *gin.Context) string {
+	sortBy := c.Query("sort_by")
+	if sortBy == "" {
+		return "popularity.desc"
+	}
+
+	return sortBy
 }
