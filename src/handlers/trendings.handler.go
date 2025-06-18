@@ -14,6 +14,7 @@ func GetTrendingMovies(c *gin.Context) {
 	timeWindow, err := utils.ValidateTimeWindow(c.Param("time_window"))
 	if err != nil {
 		utils.HandleError(c, errors.NewBadRequestError(err.Error()))
+		return
 	}
 	language := utils.ValidateQueryLanguage(c)
 
