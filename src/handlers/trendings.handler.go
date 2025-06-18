@@ -30,6 +30,7 @@ func GetAllTrendings(c *gin.Context) {
 	timeWindow, err := utils.ValidateTimeWindow(c)
 	if err != nil {
 		utils.HandleError(c, errors.NewBadRequestError("invalid time window"))
+		return
 	}
 	language := utils.ValidateQueryLanguage(c)
 	trending, err := services.FetchAllTrendings(timeWindow, language)
