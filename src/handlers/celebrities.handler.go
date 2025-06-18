@@ -9,10 +9,7 @@ import (
 
 func GetPopularPeople(c *gin.Context) {
 	language := utils.ValidateQueryLanguage(c)
-	page := c.Query("page")
-	if page == "" {
-		page = "1"
-	}
+	page := utils.ValidateQueryPage(c)
 	people, err := services.FetchPopularPeople(language, page)
 	if err != nil {
 		utils.HandleError(c, err)
@@ -22,22 +19,9 @@ func GetPopularPeople(c *gin.Context) {
 	utils.HandleResponseOK(c, people)
 }
 
-func validateTimeWindow(c *gin.Context) string {
-	time_window := c.Param("time_window")
-	if time_window == "" {
-		time_window = "day"
-	}
-
-	if time_window != "day" && time_window != "week" {
-		time_window = "day"
-	}
-
-	return time_window
-}
-
 func GetTrendingPeople(c *gin.Context) {
 	language := utils.ValidateQueryLanguage(c)
-	time_window := validateTimeWindow(c)
+	time_window := c.Param("time_window")
 
 	people, err := services.FetchTrendingPeople(language, time_window)
 	if err != nil {
