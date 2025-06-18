@@ -8,12 +8,8 @@ import (
 )
 
 func GetSerieGenres(c *gin.Context) {
-	language := c.Query("language")
+	language := utils.ValidateQueryLanguage(c)
 	var genres models.Genres
-
-	if language == "" {
-		language = "en-US"
-	}
 
 	_, err := utils.FetchFromTMDB("/genre/tv/list?language="+language, &genres)
 	if err != nil {
@@ -25,12 +21,8 @@ func GetSerieGenres(c *gin.Context) {
 }
 
 func GetMoviesGenres(c *gin.Context) {
-	language := c.Query("language")
+	language := utils.ValidateQueryLanguage(c)
 	var genres models.Genres
-
-	if language == "" {
-		language = "en-US"
-	}
 
 	_, err := utils.FetchFromTMDB("/genre/movie/list?language="+language, &genres)
 	if err != nil {

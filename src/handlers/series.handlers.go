@@ -23,9 +23,8 @@ func GetPopularSeries(c *gin.Context) {
 func GetSeriesDetails(c *gin.Context) {
 	series_id := c.Param("series_id")
 	language := utils.ValidateQueryLanguage(c)
-	append_to_response := c.Query("append_to_response")
 
-	serie, err := services.FetchSeriesDetails(series_id, language, append_to_response)
+	serie, err := services.FetchSeriesDetails(series_id, language)
 	if err != nil {
 		utils.HandleError(c, err)
 		return

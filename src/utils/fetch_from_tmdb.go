@@ -6,8 +6,6 @@ import (
 	"io"
 	config "movie/internal"
 	"net/http"
-
-	"github.com/gin-gonic/gin"
 )
 
 var baseUrl = "https://api.themoviedb.org/3"
@@ -47,28 +45,4 @@ func FetchFromTMDB(endpoint string, results any) (int, error) {
 	}
 
 	return http.StatusOK, nil
-}
-
-func ValidateQueryLanguage(c *gin.Context) string {
-	language := c.Query("language")
-	if language == "" {
-		language = "en-US" // default language
-	}
-	return language
-}
-
-func ValidateQueryPage(c *gin.Context) string {
-	page := c.Query("page")
-	if page == "" {
-		page = "1" // default page
-	}
-	return page
-}
-
-func ValidateIncludeAdult(c *gin.Context) bool {
-	include_adult := c.Query("include_adult")
-	if include_adult == "" {
-		include_adult = "false"
-	}
-	return include_adult == "true"
 }

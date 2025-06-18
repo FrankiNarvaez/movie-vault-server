@@ -1,17 +1,24 @@
 package handlers
 
 import (
+	"movie/src/errors"
 	"movie/src/services"
 	"movie/src/utils"
 
 	"github.com/gin-gonic/gin"
 )
 
-func GetTrendingMovies(c *gin.Context) {
-	time := c.Param("time_window")
-	language := c.Query("language")
+func GetAllTrendings(c *gin.Context) {}
 
-	movies, err := services.FetchTrendingMovies(time, language)
+func GetTrendingMovies(c *gin.Context) {
+	timeWindow, err := utils.ValidateTimeWindow(c.Param("time_window"))
+	if err != nil {
+		utils.HandleError(c, errors.NewBadRequestError(err.Error()))
+		return
+	}
+	language := utils.ValidateQueryLanguage(c)
+
+	movies, err := services.FetchTrendingMovies(timeWindow, language)
 	if err != nil {
 		utils.HandleError(c, err)
 		return
@@ -21,9 +28,12 @@ func GetTrendingMovies(c *gin.Context) {
 }
 
 func GetTrendingSeries(c *gin.Context) {
+	timeWindow, err := utils.ValidateTimeWindow(c.Param("time_window"))
+	if err != nil {
+		utils.HandleError(c, errors.NewBadRequestError(err.Error()))
+	}
 	language := utils.ValidateQueryLanguage(c)
-	time := c.Param("time_window")
-	series, err := services.FetchTrendingSeries(language, time)
+	series, err := services.FetchTrendingSeries(language, timeWindow)
 	if err != nil {
 		utils.HandleError(c, err)
 		return
@@ -33,14 +43,17 @@ func GetTrendingSeries(c *gin.Context) {
 }
 
 func GetTrendingCelebrities(c *gin.Context) {
+	timeWindow, err := utils.ValidateTimeWindow(c.Param("time_window"))
+	if err != nil {
+		utils.HandleError(c, errors.NewBadRequestError(err.Error()))
+	}
 	language := utils.ValidateQueryLanguage(c)
-	time_window := validateTimeWindow(c)
 
-	people, err := services.FetchTrendingCelebrities(language, time_window)
+	celebrities, err := services.FetchTrendingCelebrities(language, timeWindow)
 	if err != nil {
 		utils.HandleError(c, err)
 		return
 	}
 
-	utils.HandleResponseOK(c, people)
+	utils.HandleResponseOK(c, celebrities)
 }

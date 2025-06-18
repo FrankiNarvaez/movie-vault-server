@@ -27,7 +27,7 @@ func FetchTrendingSeries(language, time string) (types.TrendingSeries, error) {
 	return series, nil
 }
 
-func FetchSeriesDetails(series_id, language, append_to_response string) (types.SeriesDetails, error) {
+func FetchSeriesDetails(series_id, language string) (types.SeriesDetails, error) {
 	var series types.SeriesDetails
 	url := fmt.Sprintf("/tv/%s?language=%s", series_id, language)
 
