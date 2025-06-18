@@ -23,7 +23,7 @@ type DiscoverSerie struct {
 	VoteCount        int      `json:"vote_count"`
 }
 
-type DiscorverMoviesResults struct {
+type DiscoverMoviesResults struct {
 	Pages        int64           `json:"pages"`
 	Results      []DiscoverMovie `json:"results"`
 	TotalPages   int64           `json:"total_pages"`
