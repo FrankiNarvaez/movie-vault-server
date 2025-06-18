@@ -10,7 +10,6 @@ func CelebrityRoutes(api *gin.RouterGroup) {
 	celebrities := api.Group("/celebrities")
 
 	celebrities.GET("/popular", handlers.GetPopularCelebrities)
-	celebrities.GET("/trending/:time_window", handlers.GetTrendingCelebrities)
 
 	celebritiesById := celebrities.Group("/:celebrity_id")
 	{

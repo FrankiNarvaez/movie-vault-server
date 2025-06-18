@@ -10,7 +10,6 @@ func MoviesRoutes(api *gin.RouterGroup) {
 	movies := api.Group("/movies")
 
 	movies.GET("/popular", handlers.GetPopularMovies)
-	movies.GET("/trending/:time_window", handlers.GetTrendingMovies)
 
 	moviesById := movies.Group("/:movie_id")
 	{
