@@ -1,6 +1,6 @@
 package types
 
-type DiscorverSeriesResults struct {
+type DiscoverSeriesResults struct {
 	Pages        int64           `json:"pages"`
 	Results      []DiscoverSerie `json:"results"`
 	TotalPages   int64           `json:"total_pages"`
