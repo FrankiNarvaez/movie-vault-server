@@ -12,10 +12,10 @@ type SearchMovies struct {
 }
 
 type SearchCelebrities struct {
-	Page         int             `json:"page"`
-	Results      []models.Person `json:"results"`
-	TotalResults int             `json:"total_results"`
-	TotalPages   int             `json:"total_pages"`
+	Page         int                `json:"page"`
+	Results      []models.Celebrity `json:"results"`
+	TotalResults int                `json:"total_results"`
+	TotalPages   int                `json:"total_pages"`
 }
 
 type SearchCompanies struct {
@@ -26,17 +26,19 @@ type SearchCompanies struct {
 }
 
 type SearchSeries struct {
-	Page         int         `json:"page"`
-	Results      []ResultsTv `json:"results"`
-	TotalResults int         `json:"total_results"`
-	TotalPages   int         `json:"total_pages"`
+	Page         int             `json:"page"`
+	Results      []ResultsSeries `json:"results"`
+	TotalResults int             `json:"total_results"`
+	TotalPages   int             `json:"total_pages"`
 }
 
 type ResultsAll struct {
 	Adult            bool    `json:"adult"`
 	BackdropPath     string  `json:"backdrop_path"`
 	Id               int     `json:"id"`
-	Title            string  `json:"title"`
+	Title            string  `json:"title,omitempty"`
+	Name             string  `json:"name"`
+	OriginalName     string  `json:"original_name,omitempty"`
 	OriginalLanguage string  `json:"original_language"`
 	OriginalTitle    string  `json:"original_title"`
 	Overview         string  `json:"overview"`
@@ -60,9 +62,13 @@ type SearchAll struct {
 type SearchResult struct {
 	ID               int     `json:"id"`
 	Title            string  `json:"title,omitempty"`
-	Name             string  `json:"name,omitempty"` // para series o personas
+	Name             string  `json:"name,omitempty"`
+	Overview         string  `json:"overview,omitempty"`
 	MediaType        string  `json:"media_type"`
 	VoteAverage      float64 `json:"vote_average"`
 	OriginalLanguage string  `json:"original_language"`
 	GenreIDs         []int   `json:"genre_ids,omitempty"`
+	PosterPath       string  `json:"poster_path,omitempty"`
+	BackdropPath     string  `json:"backdrop_path,omitempty"`
+	Popularity       float64 `json:"popularity"`
 }

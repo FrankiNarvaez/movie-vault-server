@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func GetPopularTvs(c *gin.Context) {
+func GetPopularSeries(c *gin.Context) {
 	language := utils.ValidateQueryLanguage(c)
 	page := utils.ValidateQueryPage(c)
 	movies, err := services.FetchPopularSeries(language, page)
@@ -18,18 +18,6 @@ func GetPopularTvs(c *gin.Context) {
 	}
 
 	utils.HandleResponseOK(c, movies)
-}
-
-func GetTrendingTvs(c *gin.Context) {
-	language := utils.ValidateQueryLanguage(c)
-	time := c.Param("time_window")
-	series, err := services.FetchTrendingSeries(language, time)
-	if err != nil {
-		utils.HandleError(c, err)
-		return
-	}
-
-	utils.HandleResponseOK(c, series)
 }
 
 func GetSeriesDetails(c *gin.Context) {

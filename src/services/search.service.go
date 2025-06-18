@@ -21,20 +21,16 @@ func FetchSearchMovies(language, query string, include_adult bool, page string, 
 		filtered := make([]types.MovieResult, 0, len(movies.Results))
 		for _, m := range movies.Results {
 			modelMovie := models.Movie{
-				ID:               m.ID,
-				Title:            m.Title,
-				OriginalTitle:    m.OriginalTitle,
-				Overview:         m.Overview,
-				ReleaseDate:      m.ReleaseDate,
 				Genres_IDs:       m.Genres_IDs,
-				OriginalLanguage: m.OriginalLanguage,
 				VoteAverage:      m.VoteAverage,
+				OriginalLanguage: m.OriginalLanguage,
 			}
 			if utils.PassesFilters(modelMovie, filters) {
 				filtered = append(filtered, m)
 			}
 		}
 		movies.Results = filtered
+		movies.TotalResults = len(filtered)
 	}
 
 	return movies, nil
@@ -43,7 +39,7 @@ func FetchSearchMovies(language, query string, include_adult bool, page string, 
 func FetchSearchSeries(language, query string, include_adult bool, page string, filters models.Filters) (types.SearchSeries, error) {
 	var series types.SearchSeries
 
-	url := fmt.Sprintf("/search/tv?language=%s&query=%s&include_adult=%t&page=%s", language, query, include_adult, page)
+	url := fmt.Sprintf("/search/tv?query=%s&include_adult=%t&language=%s&page=%s", query, include_adult, language, page)
 
 	statusCode, err := utils.FetchFromTMDB(url, &series)
 	if err != nil {
@@ -51,23 +47,19 @@ func FetchSearchSeries(language, query string, include_adult bool, page string, 
 	}
 
 	if !utils.IsFiltersEmpty(filters) {
-		filtered := make([]types.ResultsTv, 0, len(series.Results))
+		filtered := make([]types.ResultsSeries, 0, len(series.Results))
 		for _, s := range series.Results {
-			modelMovie := models.Movie{
-				ID:               s.ID,
-				Title:            s.Name,
-				OriginalTitle:    s.OriginalName,
-				Overview:         s.Overview,
-				ReleaseDate:      s.FirstAirDate,
+			modelSeries := models.Movie{
 				Genres_IDs:       &s.GenreIds,
-				OriginalLanguage: s.OriginalLanguage,
 				VoteAverage:      s.VoteAverage,
+				OriginalLanguage: s.OriginalLanguage,
 			}
-			if utils.PassesFilters(modelMovie, filters) {
+			if utils.PassesFilters(modelSeries, filters) {
 				filtered = append(filtered, s)
 			}
 		}
 		series.Results = filtered
+		series.TotalResults = len(filtered)
 	}
 
 	return series, nil
@@ -84,28 +76,44 @@ func FetchSearchAll(language, query string, include_adult bool, page string, fil
 	}
 
 	if !utils.IsFiltersEmpty(filters) {
-		searchResults := make([]types.SearchResult, len(all.Results))
-		for i, v := range all.Results {
-			searchResults[i] = types.SearchResult{
-				ID:               v.Id,
-				MediaType:        v.MediaType,
-				Title:            v.Title,
-				Name:             v.Title,
-				OriginalLanguage: v.OriginalLanguage,
-				GenreIDs:         v.GenreIds,
+		var searchResults []types.SearchResult
+		for _, item := range all.Results {
+			sr := types.SearchResult{
+				ID:               item.Id,
+				Title:            item.Title,
+				Name:             item.Name,
+				MediaType:        item.MediaType,
+				Overview:         item.Overview,
+				VoteAverage:      item.VoteAverage,
+				OriginalLanguage: item.OriginalLanguage,
+				GenreIDs:         item.GenreIds,
+				PosterPath:       item.PosterPath,
+				BackdropPath:     item.BackdropPath,
+				Popularity:       item.Popularity,
 			}
+			searchResults = append(searchResults, sr)
 		}
+
 		filtered := utils.ApplyFilters(searchResults, filters)
+
+		// Reconstruir ResultsAll
 		all.Results = make([]types.ResultsAll, len(filtered))
 		for i, v := range filtered {
 			all.Results[i] = types.ResultsAll{
 				Id:               v.ID,
-				MediaType:        v.MediaType,
 				Title:            v.Title,
+				Name:             v.Name,
+				MediaType:        v.MediaType,
+				Overview:         v.Overview,
+				VoteAverage:      v.VoteAverage,
 				OriginalLanguage: v.OriginalLanguage,
 				GenreIds:         v.GenreIDs,
+				PosterPath:       v.PosterPath,
+				BackdropPath:     v.BackdropPath,
+				Popularity:       v.Popularity,
 			}
 		}
+		all.TotalResults = len(filtered)
 	}
 
 	return all, nil

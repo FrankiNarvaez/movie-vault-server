@@ -35,24 +35,41 @@ func CheckPasswordHash(password, hash string) bool {
 	return err == nil
 }
 
-func GenerateToken(username string) (string, error) {
+func GenerateToken(user_id string) (string, error) {
 	generateToken := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"username": username,
-		"exp":      time.Now().Add(time.Hour * 1200).Unix(),
+		"user_id": user_id,
+		"exp":     time.Now().Add(time.Hour * 1200).Unix(),
 	})
 
 	return generateToken.SignedString([]byte(config.Secret))
 }
 
-func ValidateToken(tokenString string) bool {
-	_, err := jwt.Parse(tokenString, func(token *jwt.Token) (any, error) {
+func ValidateToken(tokenString string) (models.User, error) {
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (any, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
 		return []byte(config.Secret), nil
 	})
+	if err != nil {
+		return models.User{}, err
+	}
 
-	return err == nil
+	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+		user_id, ok := claims["user_id"].(string)
+		if !ok {
+			return models.User{}, fmt.Errorf("username not found in token")
+		}
+
+		user, err := utils.FindUserByID(user_id)
+		if err != nil {
+			return models.User{}, fmt.Errorf("user not found")
+		}
+
+		return user, nil
+	}
+
+	return models.User{}, fmt.Errorf("invalid or expired token")
 }
 
 func Login(c *gin.Context) {
@@ -84,7 +101,7 @@ func Login(c *gin.Context) {
 	}
 
 	// Generate token
-	token, err := GenerateToken(user.Username)
+	token, err := GenerateToken(user.ID)
 	if err != nil {
 		utils.HandleError(c, errors.NewError("UNAUTHORIZED", "Could not create token", http.StatusUnauthorized))
 		return
@@ -108,7 +125,7 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	if _, err := utils.FindUser(credentials.Username); err != nil {
+	if _, err := utils.FindUser(credentials.Username); err == nil {
 		utils.HandleError(c, errors.NewError("CONFLICT", "User already exists", http.StatusConflict))
 		return
 	}
@@ -119,23 +136,27 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	queryCreateUser := `INSERT INTO users (username, email, password, created_at) values ($1, $2, $3, $4)`
+	queryCreateUser := `INSERT INTO users (username, email, password, created_at)
+	values ($1, $2, $3, $4)
+	RETURNING *`
 
-	if _, err := db.Query(queryCreateUser, credentials.Username, credentials.Email, passwordHash, time.Now()); err != nil {
+	var user models.User
+	if err := db.Get(&user, queryCreateUser, credentials.Username, credentials.Email, passwordHash, time.Now()); err != nil {
 		utils.HandleError(c, errors.NewInternalServerError("Could not create user"))
 		return
 	}
-	//
+
 	// Generate token
-	token, err := GenerateToken(credentials.Username)
+	token, err := GenerateToken(user.ID)
 	if err != nil {
 		utils.HandleError(c, errors.NewError("UNAUTHORIZED", "Could not create token", http.StatusUnauthorized))
 		return
 	}
 
 	utils.HandleResponseOK(c, gin.H{
-		"username": credentials.Username,
-		"email":    credentials.Email,
+		"id":       user.ID,
+		"username": user.Username,
+		"email":    user.Email,
 		"token":    token,
 	})
 }

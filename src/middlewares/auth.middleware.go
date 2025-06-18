@@ -26,11 +26,13 @@ func CheckAuth(c *gin.Context) {
 		return
 	}
 
-	if !handlers.ValidateToken(authToken[1]) {
-		utils.HandleError(c, errors.NewError("UNAUTHORIZED", "Invalid or expired token", http.StatusUnauthorized))
+	user, err := handlers.ValidateToken(authToken[1])
+	if err != nil {
+		utils.HandleError(c, errors.NewError("UNAUTHORIZED", err.Error(), http.StatusUnauthorized))
 		c.AbortWithStatus(http.StatusUnauthorized)
 		return
 	}
 
+	c.Set("user", user)
 	c.Next()
 }

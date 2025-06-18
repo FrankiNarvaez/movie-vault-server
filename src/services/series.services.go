@@ -7,22 +7,22 @@ import (
 	"movie/src/utils"
 )
 
-func FetchPopularSeries(language, page string) (types.PopularTv, error) {
-	var series types.PopularTv
+func FetchPopularSeries(language, page string) (types.PopularSeries, error) {
+	var series types.PopularSeries
 	url := fmt.Sprintf("/tv/popular?language=%s&page=%s", language, page)
 
 	if status, err := utils.FetchFromTMDB(url, &series); err != nil {
-		return types.PopularTv{}, utils.HandleTMDBError(status, "popular series", err)
+		return types.PopularSeries{}, utils.HandleTMDBError(status, "popular series", err)
 	}
 	return series, nil
 }
 
-func FetchTrendingSeries(language, time string) (types.TrendingTv, error) {
-	var series types.TrendingTv
+func FetchTrendingSeries(language, time string) (types.TrendingSeries, error) {
+	var series types.TrendingSeries
 	url := fmt.Sprintf("/trending/tv/%s?language=%s", time, language)
 
 	if status, err := utils.FetchFromTMDB(url, &series); err != nil {
-		return types.TrendingTv{}, utils.HandleTMDBError(status, "trending series", err)
+		return types.TrendingSeries{}, utils.HandleTMDBError(status, "trending series", err)
 	}
 	return series, nil
 }

@@ -6,38 +6,38 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func TvRoutes(api *gin.RouterGroup) {
-	tv := api.Group("/tv")
+func SerieRoutes(api *gin.RouterGroup) {
+	series := api.Group("/series")
 
-	tv.GET("/popular", handlers.GetPopularTvs)
-	tv.GET("/trending/:time_window", handlers.GetTrendingTvs)
+	series.GET("/popular", handlers.GetPopularSeries)
+	series.GET("/trending/:time_window", handlers.GetTrendingSeries)
 
-	tvById := tv.Group("/:series_id")
+	seriesById := series.Group("/:series_id")
 	{
-		tvById.GET("", handlers.GetSeriesDetails)
-		tvById.GET("/credits", handlers.GetSeriesCredits)
-		tvById.GET("/images", handlers.GetSeriesImages)
-		tvById.GET("/videos", handlers.GetSeriesVideos)
-		tvById.GET("/recommendations", handlers.GetSeriesRecommendations)
-		tvById.GET("/external_ids", handlers.GetSeriesExternalIds)
-		tvById.GET("/watch_providers", handlers.GetSeriesWatchProviders)
+		seriesById.GET("", handlers.GetSeriesDetails)
+		seriesById.GET("/credits", handlers.GetSeriesCredits)
+		seriesById.GET("/images", handlers.GetSeriesImages)
+		seriesById.GET("/videos", handlers.GetSeriesVideos)
+		seriesById.GET("/recommendations", handlers.GetSeriesRecommendations)
+		seriesById.GET("/external_ids", handlers.GetSeriesExternalIds)
+		seriesById.GET("/watch_providers", handlers.GetSeriesWatchProviders)
 
-		tvBySeasonAndId := tvById.Group("/season/:season_number")
+		seriesBySeasonAndId := seriesById.Group("/season/:season_number")
 		{
-			tvBySeasonAndId.GET("", handlers.GetSeasonDetails)
-			tvBySeasonAndId.GET("/credits", handlers.GetSeasonCredits)
-			tvBySeasonAndId.GET("/external_ids", handlers.GetSeasonExternalIds)
-			tvBySeasonAndId.GET("/images", handlers.GetSeasonImages)
-			tvBySeasonAndId.GET("/videos", handlers.GetSeasonVideos)
-			tvBySeasonAndId.GET("/watch_providers", handlers.GetSeasonWatchProviders)
+			seriesBySeasonAndId.GET("", handlers.GetSeasonDetails)
+			seriesBySeasonAndId.GET("/credits", handlers.GetSeasonCredits)
+			seriesBySeasonAndId.GET("/external_ids", handlers.GetSeasonExternalIds)
+			seriesBySeasonAndId.GET("/images", handlers.GetSeasonImages)
+			seriesBySeasonAndId.GET("/videos", handlers.GetSeasonVideos)
+			seriesBySeasonAndId.GET("/watch_providers", handlers.GetSeasonWatchProviders)
 
-			tvBySeasonAndIdAndEpisode := tvBySeasonAndId.Group("/episode/:episode_number")
+			seriesBySeasonAndIdAndEpisode := seriesBySeasonAndId.Group("/episode/:episode_number")
 			{
-				tvBySeasonAndIdAndEpisode.GET("", handlers.GetEpisodeDetails)
-				tvBySeasonAndIdAndEpisode.GET("/credits", handlers.GetEpisodeCredits)
-				tvBySeasonAndIdAndEpisode.GET("/external_ids", handlers.GetEpisodeExternalIds)
-				tvBySeasonAndIdAndEpisode.GET("/images", handlers.GetEpisodeImages)
-				tvBySeasonAndIdAndEpisode.GET("/videos", handlers.GetEpisodeVideos)
+				seriesBySeasonAndIdAndEpisode.GET("", handlers.GetEpisodeDetails)
+				seriesBySeasonAndIdAndEpisode.GET("/credits", handlers.GetEpisodeCredits)
+				seriesBySeasonAndIdAndEpisode.GET("/external_ids", handlers.GetEpisodeExternalIds)
+				seriesBySeasonAndIdAndEpisode.GET("/images", handlers.GetEpisodeImages)
+				seriesBySeasonAndIdAndEpisode.GET("/videos", handlers.GetEpisodeVideos)
 			}
 		}
 	}

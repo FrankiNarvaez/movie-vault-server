@@ -2,7 +2,7 @@ package types
 
 import "movie/src/models"
 
-type PersonTrending struct {
+type CelebrityTrending struct {
 	Adult              bool    `json:"adult"`
 	Id                 int     `json:"id"`
 	Name               string  `json:"name"`
@@ -68,12 +68,12 @@ type Crew struct {
 	MediaType        *string `json:"media_type"`
 }
 
-type PersonExternalIds struct {
+type CelebrityExternalIds struct {
 	Id           int     `json:"id"`
 	Freebase_mid *string `json:"freebase_mid"`
 	Freebase_sid *string `json:"freebase_sid"`
-	Imdb_id      *string `json:"imdb_id"`
-	Tvrage_id    *int64  `json:"tvrage_id"`
+	Tmdb_id      *string `json:"tmdb_id"`
+	Serierage_id *int64  `json:"tvrage_id"`
 	Wikidata_id  *string `json:"wikidata_id"`
 	Facebook_id  *string `json:"facebook_id"`
 	Instagram_id *string `json:"instagram_id"`
@@ -82,32 +82,32 @@ type PersonExternalIds struct {
 	Youtube_id   *string `json:"youtube_id"`
 }
 
-type PopularPeople struct {
-	Pages        int64           `json:"pages"`
-	Results      []models.Person `json:"results"`
-	TotalPages   int64           `json:"total_pages"`
-	TotalResults int64           `json:"total_results"`
+type PopularCelebrities struct {
+	Pages        int64              `json:"pages"`
+	Results      []models.Celebrity `json:"results"`
+	TotalPages   int64              `json:"total_pages"`
+	TotalResults int64              `json:"total_results"`
 }
 
-type TrendingPeople struct {
-	Pages        int64            `json:"pages"`
-	Results      []PersonTrending `json:"results"`
-	TotalPages   int64            `json:"total_pages"`
-	TotalResults int64            `json:"total_results"`
+type TrendingCelebrities struct {
+	Pages        int64               `json:"pages"`
+	Results      []CelebrityTrending `json:"results"`
+	TotalPages   int64               `json:"total_pages"`
+	TotalResults int64               `json:"total_results"`
 }
 
-type PersonImages struct {
+type CelebrityImages struct {
 	Id       int        `json:"id"`
 	Profiles []Profiles `json:"profiles"`
 }
 
-type PersonMovieCredits struct {
+type CelebrityMovieCredits struct {
 	Cast []Cast `json:"cast"`
 	Crew []Crew `json:"crew"`
 	Id   int    `json:"id"`
 }
 
-type PersonCombinedCredits struct {
+type CelebrityCombinedCredits struct {
 	Cast []Cast `json:"cast"`
 	Crew []Crew `json:"crew"`
 	Id   int    `json:"id"`

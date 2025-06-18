@@ -8,7 +8,11 @@ import (
 )
 
 func FavoriteRoutes(api *gin.RouterGroup) {
-	api.GET("/favorites", middlewares.CheckAuth, handlers.GetFavorites)
-	api.POST("/favorites/:imdb_id", middlewares.CheckAuth, handlers.CreateFavorite)
-	api.DELETE("/favorites/:imdb_id", middlewares.CheckAuth, handlers.DestroyFavorite)
+	favorites := api.Group("favorites")
+	favorites.Use(middlewares.CheckAuth)
+	{
+		favorites.GET("", middlewares.CheckAuth, handlers.GetFavorites)
+		favorites.POST("", middlewares.CheckAuth, handlers.CreateFavorite)
+		favorites.DELETE("/:id", middlewares.CheckAuth, handlers.DestroyFavorite)
+	}
 }

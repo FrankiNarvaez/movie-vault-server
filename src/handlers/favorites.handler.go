@@ -12,10 +12,15 @@ import (
 func GetFavorites(c *gin.Context) {
 	var favorites []models.Favorite
 	db := config.DB
+	user, err := utils.GetUserFromContext(c)
+	if err != nil {
+		utils.HandleError(c, errors.NewUnauthorizedError(err.Error()))
+		return
+	}
 
-	query := `SELECT id, user_id, imdb_id, type from favorites`
+	query := `SELECT id, user_id, tmdb_id, type from favorites WHERE user_id=$1`
 
-	if err := db.Select(&favorites, query); err != nil {
+	if err := db.Select(&favorites, query, user.ID); err != nil {
 		utils.HandleError(c, errors.NewInternalServerError("Could not get favorites"))
 		return
 	}
@@ -24,19 +29,25 @@ func GetFavorites(c *gin.Context) {
 }
 
 func CreateFavorite(c *gin.Context) {
-	var favorite models.Favorite
+	var body models.Favorite
 	db := config.DB
+	user, err := utils.GetUserFromContext(c)
+	if err != nil {
+		utils.HandleError(c, errors.NewUnauthorizedError(err.Error()))
+		return
+	}
 
-	if err := c.ShouldBindJSON(&favorite); err != nil {
+	if err := c.ShouldBindJSON(&body); err != nil {
 		utils.HandleError(c, errors.NewBadRequestError("Invalid request body"))
 		return
 	}
 
-	favorite.ImdbID = c.Param("imdb_id")
+	query := `INSERT INTO favorites (user_id, tmdb_id, type)
+	VALUES ($1, $2, $3)
+	RETURNING id, user_id, tmdb_id, type`
 
-	query := `INSERT INTO favorites (user_id, imdb_id, type) VALUES ($1, $2, $3)`
-
-	if _, err := db.Query(query, favorite.UserID, favorite.ImdbID, favorite.Type); err != nil {
+	var favorite models.Favorite
+	if err := db.Get(&favorite, query, user.ID, body.TmdbID, body.Type); err != nil {
 		utils.HandleError(c, errors.NewInternalServerError("Could not add to favorites"))
 		return
 	}
@@ -45,27 +56,25 @@ func CreateFavorite(c *gin.Context) {
 }
 
 func DestroyFavorite(c *gin.Context) {
-	var favorite models.Favorite
 	db := config.DB
-
-	if err := c.ShouldBindJSON(&favorite); err != nil {
-		utils.HandleError(c, errors.NewBadRequestError("Invalid request body"))
+	user, err := utils.GetUserFromContext(c)
+	if err != nil {
+		utils.HandleError(c, errors.NewUnauthorizedError(err.Error()))
 		return
 	}
 
-	favorite.ImdbID = c.Param("imdb_id")
-
-	query_search := `SELECT 1 FROM favorites WHERE user_id = $1 AND imdb_id = $2 AND type = $3`
+	id := c.Param("id")
+	query_search := `SELECT 1 FROM favorites WHERE id=$1 and user_id=$2`
 	var exists int
 
-	if err := db.Get(&exists, query_search, favorite.UserID, favorite.ImdbID, favorite.Type); err != nil {
+	if err := db.Get(&exists, query_search, id, user.ID); err != nil {
 		utils.HandleError(c, errors.NewNotFoundError("Favorite not found"))
 		return
 	}
 
-	query_destroy := `DELETE FROM favorites WHERE user_id = $1 AND imdb_id = $2 AND type = $3;`
+	query_destroy := `DELETE FROM favorites WHERE id=$1`
 
-	if _, err := db.Exec(query_destroy, favorite.UserID, favorite.ImdbID, favorite.Type); err != nil {
+	if _, err := db.Exec(query_destroy, id); err != nil {
 		utils.HandleError(c, errors.NewInternalServerError("Could not remove from favorites"))
 		return
 	}

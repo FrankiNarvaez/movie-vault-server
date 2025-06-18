@@ -7,85 +7,85 @@ import (
 	"movie/src/utils"
 )
 
-func FetchPopularPeople(language string, page string) (types.PopularPeople, error) {
-	var people types.PopularPeople
+func FetchPopularCelebrities(language string, page string) (types.PopularCelebrities, error) {
+	var celebrities types.PopularCelebrities
 	url := fmt.Sprintf("/person/popular?language=%s&page=%s", language, page)
 
-	status, err := utils.FetchFromTMDB(url, &people)
+	status, err := utils.FetchFromTMDB(url, &celebrities)
 	if err != nil {
-		return types.PopularPeople{}, utils.HandleTMDBError(status, "popular people", err)
+		return types.PopularCelebrities{}, utils.HandleTMDBError(status, "popular celebrities", err)
 	}
 
-	return people, nil
+	return celebrities, nil
 }
 
-func FetchTrendingPeople(language string, time_window string) (types.TrendingPeople, error) {
-	var people types.TrendingPeople
+func FetchTrendingCelebrities(language string, time_window string) (types.TrendingCelebrities, error) {
+	var celebrities types.TrendingCelebrities
 	url := fmt.Sprintf("/trending/person/%s?language=%s", time_window, language)
 
-	status, err := utils.FetchFromTMDB(url, &people)
+	status, err := utils.FetchFromTMDB(url, &celebrities)
 	if err != nil {
-		return types.TrendingPeople{}, utils.HandleTMDBError(status, "trending people", err)
+		return types.TrendingCelebrities{}, utils.HandleTMDBError(status, "trending celebrities", err)
 	}
 
-	return people, nil
+	return celebrities, nil
 }
 
-func FetchPersonDetails(person_id string, language string) (models.Person, error) {
-	var person models.Person
-	url := fmt.Sprintf("/person/%s?language=%s", person_id, language)
+func FetchCelebrityDetails(celebrity_id string, language string) (models.Celebrity, error) {
+	var celebrity models.Celebrity
+	url := fmt.Sprintf("/person/%s?language=%s", celebrity_id, language)
 
-	status, err := utils.FetchFromTMDB(url, &person)
+	status, err := utils.FetchFromTMDB(url, &celebrity)
 	if err != nil {
-		return models.Person{}, utils.HandleTMDBError(status, "person details for ID "+person_id, err)
+		return models.Celebrity{}, utils.HandleTMDBError(status, "celebrity details for ID "+celebrity_id, err)
 	}
 
-	return person, nil
+	return celebrity, nil
 }
 
-func FetchPersonImages(person_id string) (types.PersonImages, error) {
-	var images types.PersonImages
-	url := fmt.Sprintf("/person/%s/images", person_id)
+func FetchCelebrityImages(celebrity_id string) (types.CelebrityImages, error) {
+	var images types.CelebrityImages
+	url := fmt.Sprintf("/person/%s/images", celebrity_id)
 
 	status, err := utils.FetchFromTMDB(url, &images)
 	if err != nil {
-		return types.PersonImages{}, utils.HandleTMDBError(status, "person images for ID "+person_id, err)
+		return types.CelebrityImages{}, utils.HandleTMDBError(status, "celebrity images for ID "+celebrity_id, err)
 	}
 
 	return images, nil
 }
 
-func FetchPersonMovieCredits(person_id string, language string) (types.PersonMovieCredits, error) {
-	var credits types.PersonMovieCredits
-	url := fmt.Sprintf("/person/%s/movie_credits?language=%s", person_id, language)
+func FetchCelebrityMovieCredits(celebrity_id string, language string) (types.CelebrityMovieCredits, error) {
+	var credits types.CelebrityMovieCredits
+	url := fmt.Sprintf("/person/%s/movie_credits?language=%s", celebrity_id, language)
 
 	status, err := utils.FetchFromTMDB(url, &credits)
 	if err != nil {
-		return types.PersonMovieCredits{}, utils.HandleTMDBError(status, "person movie credits for ID "+person_id, err)
+		return types.CelebrityMovieCredits{}, utils.HandleTMDBError(status, "celebrity movie credits for ID "+celebrity_id, err)
 	}
 
 	return credits, nil
 }
 
-func FetchPersonCombinedCredits(person_id string, language string) (types.PersonCombinedCredits, error) {
-	var credits types.PersonCombinedCredits
-	url := fmt.Sprintf("/person/%s/combined_credits?language=%s", person_id, language)
+func FetchCelebrityCombinedCredits(celebrity_id string, language string) (types.CelebrityCombinedCredits, error) {
+	var credits types.CelebrityCombinedCredits
+	url := fmt.Sprintf("/person/%s/combined_credits?language=%s", celebrity_id, language)
 
 	status, err := utils.FetchFromTMDB(url, &credits)
 	if err != nil {
-		return types.PersonCombinedCredits{}, utils.HandleTMDBError(status, "person combined credits for ID "+person_id, err)
+		return types.CelebrityCombinedCredits{}, utils.HandleTMDBError(status, "celebrity combined credits for ID "+celebrity_id, err)
 	}
 
 	return credits, nil
 }
 
-func FetchPersonExternalIds(person_id string) (types.ExternalIDs, error) {
+func FetchCelebrityExternalIds(celebrity_id string) (types.ExternalIDs, error) {
 	var ids types.ExternalIDs
-	url := fmt.Sprintf("/person/%s/external_ids", person_id)
+	url := fmt.Sprintf("/person/%s/external_ids", celebrity_id)
 
 	status, err := utils.FetchFromTMDB(url, &ids)
 	if err != nil {
-		return types.ExternalIDs{}, utils.HandleTMDBError(status, "person external ids for ID "+person_id, err)
+		return types.ExternalIDs{}, utils.HandleTMDBError(status, "celebrity external ids for ID "+celebrity_id, err)
 	}
 
 	return ids, nil

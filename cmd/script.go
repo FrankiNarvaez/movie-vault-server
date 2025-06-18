@@ -3,8 +3,11 @@ package main
 import (
 	"fmt"
 	"movie/cmd/database"
+	config "movie/internal"
 	"os"
 	"slices"
+
+	"github.com/joho/godotenv"
 )
 
 var helpMessage = `Usage: go run cmd/database/script.go [options]
@@ -27,7 +30,13 @@ func main() {
 		return
 	}
 
-	db := database.Connect()
+	godotenv.Load()
+	config.ConnectDB()
+	db := config.DB
+	if db == nil {
+		fmt.Println("Error: Database connection is nil. Check your database configuration.")
+		return
+	}
 	defer db.Close()
 
 	actions := map[string]func(){

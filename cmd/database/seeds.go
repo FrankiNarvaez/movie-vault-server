@@ -11,7 +11,7 @@ import (
 func Seeds(db *sqlx.DB) {
 	log.Println("[!] Inserting seeds...")
 
-	if _, err := db.Exec(database.USERS); err != nil {
+	if _, err := db.Exec(database.SEEDS); err != nil {
 		log.Printf("[!!] Error insert seeds: %v", err)
 		return
 	}
