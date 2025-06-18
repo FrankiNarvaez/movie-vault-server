@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func GetPopularTvs(c *gin.Context) {
+func GetPopularSeries(c *gin.Context) {
 	language := utils.ValidateQueryLanguage(c)
 	page := utils.ValidateQueryPage(c)
 	movies, err := services.FetchPopularSeries(language, page)

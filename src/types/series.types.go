@@ -2,7 +2,7 @@ package types
 
 import "movie/src/models"
 
-type ResultsPopularTv struct {
+type ResultsPopularSeries struct {
 	BackdropPath     string   `json:"backdrop_path"`
 	FirstAirDate     string   `json:"first_air_date"`
 	GenreIds         []int    `json:"genre_ids"`
@@ -18,15 +18,15 @@ type ResultsPopularTv struct {
 	VoteCount        int      `json:"vote_count"`
 }
 
-type PopularTv struct {
-	Pages        int64              `json:"pages"`
-	Results      []ResultsPopularTv `json:"results"`
-	TotalPages   int64              `json:"total_pages"`
-	TotalResults int64              `json:"total_results"`
+type PopularSeries struct {
+	Pages        int64                  `json:"pages"`
+	Results      []ResultsPopularSeries `json:"results"`
+	TotalPages   int64                  `json:"total_pages"`
+	TotalResults int64                  `json:"total_results"`
 }
 
 // used to trending and recommendations
-type ResultsTv struct {
+type ResultsSeries struct {
 	Adult            bool     `json:"adult"`
 	BackdropPath     string   `json:"backdrop_path"`
 	ID               int      `json:"id"`
@@ -44,11 +44,11 @@ type ResultsTv struct {
 	OriginCountry    []string `json:"origin_country"`
 }
 
-type TrendingTv struct {
-	Pages        int64       `json:"pages"`
-	Results      []ResultsTv `json:"results"`
-	TotalPages   int64       `json:"total_pages"`
-	TotalResults int64       `json:"total_results"`
+type TrendingSeries struct {
+	Pages        int64           `json:"pages"`
+	Results      []ResultsSeries `json:"results"`
+	TotalPages   int64           `json:"total_pages"`
+	TotalResults int64           `json:"total_results"`
 }
 
 type Genres struct {
@@ -68,9 +68,9 @@ type SeriesDetails struct {
 	InProduction        bool                    `json:"in_production"`
 	Languages           []string                `json:"languages"`
 	LastAirDate         string                  `json:"last_air_date"`
-	LastEpisodeToAir    *models.EpisodeTv       `json:"last_episode_to_air"`
+	LastEpisodeToAir    *models.EpisodeSerie    `json:"last_episode_to_air"`
 	Name                string                  `json:"name"`
-	NextEpisodeToAir    *models.EpisodeTv       `json:"next_episode_to_air"`
+	NextEpisodeToAir    *models.EpisodeSerie    `json:"next_episode_to_air"`
 	Networks            []models.Network        `json:"networks"`
 	NumberOfEpisodes    int                     `json:"number_of_episodes"`
 	NumberOfSeasons     int                     `json:"number_of_seasons"`
@@ -82,7 +82,7 @@ type SeriesDetails struct {
 	PosterPath          string                  `json:"poster_path"`
 	ProductionCompanies []models.Company        `json:"production_companies"`
 	ProductionCountries []models.Country        `json:"production_countries"`
-	Seasons             []models.SeasonTV       `json:"seasons"`
+	Seasons             []models.SeasonSerie    `json:"seasons"`
 	SpokenLanguages     []models.SpokenLanguage `json:"spoken_languages"`
 	Status              string                  `json:"status"`
 	Tagline             *string                 `json:"tagline"`
@@ -126,10 +126,10 @@ type SeriesVideos struct {
 }
 
 type SeriesRecommendations struct {
-	Page         int64       `json:"page"`
-	Results      []ResultsTv `json:"results"`
-	TotalPages   int64       `json:"total_pages"`
-	TotalResults int64       `json:"total_results"`
+	Page         int64           `json:"page"`
+	Results      []ResultsSeries `json:"results"`
+	TotalPages   int64           `json:"total_pages"`
+	TotalResults int64           `json:"total_results"`
 }
 
 /// Season types

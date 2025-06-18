@@ -47,7 +47,7 @@ func FetchSearchSeries(language, query string, include_adult bool, page string, 
 	}
 
 	if !utils.IsFiltersEmpty(filters) {
-		filtered := make([]types.ResultsTv, 0, len(series.Results))
+		filtered := make([]types.ResultsSeries, 0, len(series.Results))
 		for _, s := range series.Results {
 			modelSeries := models.Movie{
 				Genres_IDs:       &s.GenreIds,
