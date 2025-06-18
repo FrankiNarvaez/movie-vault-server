@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func GetTvGenres(c *gin.Context) {
+func GetSerieGenres(c *gin.Context) {
 	language := c.Query("language")
 	var genres models.Genres
 
@@ -22,7 +22,6 @@ func GetTvGenres(c *gin.Context) {
 	}
 
 	utils.HandleResponseOK(c, genres)
-
 }
 
 func GetMoviesGenres(c *gin.Context) {

@@ -25,7 +25,7 @@ INSERT INTO users (id, username, email, password, remember_at, created_at) VALUE
     '550e8400-e29b-41d4-a716-446655440003',
     'filmcritic',
     'alex.review@email.com',
-    '$2a$12$RKm9U7H3N2FqW6Tv8XY1BeJ4K1L5P8R7Q9S2T6V9W1C3E4F5G6H7i', -- password: "reviews456"
+    '$2a$12$RKm9U7H3N2FqW6serie8XY1BeJ4K1L5P8R7Q9S2T6V9W1C3E4F5G6H7i', -- password: "reviews456"
     NULL,
     '2024-03-05 09:20:00'
 ),
@@ -58,7 +58,7 @@ INSERT INTO favorites (id, user_id, tmdb_id, type, created_at) VALUES
     '660e8400-e29b-41d4-a716-446655440003',
     '550e8400-e29b-41d4-a716-446655440001',
     'tt0944947', -- Game of Thrones
-    'tv',
+    'serie',
     '2024-01-20 19:45:00'
 ),
 (
@@ -72,7 +72,7 @@ INSERT INTO favorites (id, user_id, tmdb_id, type, created_at) VALUES
     '660e8400-e29b-41d4-a716-446655440005',
     '550e8400-e29b-41d4-a716-446655440002',
     'tt0903747', -- Breaking Bad
-    'tv',
+    'serie',
     '2024-02-25 21:10:00'
 ),
 (
@@ -122,7 +122,7 @@ INSERT INTO watchlists (id, user_id, name, created_at) VALUES
 (
     '770e8400-e29b-41d4-a716-446655440002',
     '550e8400-e29b-41d4-a716-446655440001',
-    'TV Series to Binge',
+    'serie Series to Binge',
     '2024-02-01 15:30:00'
 ),
 (
@@ -179,9 +179,9 @@ INSERT INTO item_watchlists (id, watchlist_id, tmdb_id, type, status, created_at
 ),
 (
     '880e8400-e29b-41d4-a716-446655440004',
-    '770e8400-e29b-41d4-a716-446655440002', -- TV Series to Binge
+    '770e8400-e29b-41d4-a716-446655440002', -- serie Series to Binge
     'tt2085059', -- Black Mirror
-    'tv',
+    'serie',
     0,
     '2024-02-02 10:20:00'
 ),
@@ -189,7 +189,7 @@ INSERT INTO item_watchlists (id, watchlist_id, tmdb_id, type, status, created_at
     '880e8400-e29b-41d4-a716-446655440005',
     '770e8400-e29b-41d4-a716-446655440002',
     'tt2861424', -- Rick and Morty
-    'tv',
+    'serie',
     1,
     '2024-02-05 18:30:00'
 ),
@@ -197,7 +197,7 @@ INSERT INTO item_watchlists (id, watchlist_id, tmdb_id, type, status, created_at
     '880e8400-e29b-41d4-a716-446655440006',
     '770e8400-e29b-41d4-a716-446655440002',
     'tt0141842', -- The Sopranos
-    'tv',
+    'serie',
     2,
     '2024-02-10 21:45:00'
 ),

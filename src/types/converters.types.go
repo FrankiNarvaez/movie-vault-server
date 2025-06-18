@@ -5,8 +5,10 @@ import (
 )
 
 // Define a local type alias for models.Movie
-type LocalMovie models.Movie
-type LocalTV ResultsTv
+type (
+	LocalMovie models.Movie
+	LocalSerie ResultsSeries
+)
 
 func (s SearchResult) ToMovieResult() LocalMovie {
 	return LocalMovie{
@@ -18,20 +20,20 @@ func (s SearchResult) ToMovieResult() LocalMovie {
 	}
 }
 
-// Para TVResult (si lo usas)
-func (t LocalTV) ToSearchResult() SearchResult {
+// Para SerieResult (si lo usas)
+func (t LocalSerie) ToSearchResult() SearchResult {
 	return SearchResult{
 		ID:               t.ID,
 		Name:             t.Name,
-		MediaType:        "tv",
+		MediaType:        "serie",
 		VoteAverage:      t.VoteAverage,
 		OriginalLanguage: t.OriginalLanguage,
 		GenreIDs:         t.GenreIds,
 	}
 }
 
-func (s SearchResult) ToTVResult() LocalTV {
-	return LocalTV{
+func (s SearchResult) ToSerieResult() LocalSerie {
+	return LocalSerie{
 		ID:               s.ID,
 		Name:             s.Name,
 		VoteAverage:      s.VoteAverage,

@@ -9,8 +9,8 @@ func RegisterRoutes(router *gin.Engine) {
 	{
 		AuthRoutes(api)
 		MoviesRoutes(api)
-		PeopleRoutes(api)
-		TvRoutes(api)
+		CelebrityRoutes(api)
+		SerieRoutes(api)
 		FavoriteRoutes(api)
 		WatchListRoutes(api)
 		SearchRoutes(api)

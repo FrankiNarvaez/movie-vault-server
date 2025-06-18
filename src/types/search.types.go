@@ -12,10 +12,10 @@ type SearchMovies struct {
 }
 
 type SearchCelebrities struct {
-	Page         int             `json:"page"`
-	Results      []models.Person `json:"results"`
-	TotalResults int             `json:"total_results"`
-	TotalPages   int             `json:"total_pages"`
+	Page         int                `json:"page"`
+	Results      []models.Celebrity `json:"results"`
+	TotalResults int                `json:"total_results"`
+	TotalPages   int                `json:"total_pages"`
 }
 
 type SearchCompanies struct {
@@ -26,10 +26,10 @@ type SearchCompanies struct {
 }
 
 type SearchSeries struct {
-	Page         int         `json:"page"`
-	Results      []ResultsTv `json:"results"`
-	TotalResults int         `json:"total_results"`
-	TotalPages   int         `json:"total_pages"`
+	Page         int             `json:"page"`
+	Results      []ResultsSeries `json:"results"`
+	TotalResults int             `json:"total_results"`
+	TotalPages   int             `json:"total_pages"`
 }
 
 type ResultsAll struct {

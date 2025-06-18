@@ -6,18 +6,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func PeopleRoutes(api *gin.RouterGroup) {
-	people := api.Group("/people")
+func CelebrityRoutes(api *gin.RouterGroup) {
+	celebrities := api.Group("/celebrities")
 
-	people.GET("/popular", handlers.GetPopularPeople)
-	people.GET("/trending/:time_window", handlers.GetTrendingPeople)
+	celebrities.GET("/popular", handlers.GetPopularCelebrities)
+	celebrities.GET("/trending/:time_window", handlers.GetTrendingCelebrities)
 
-	peopleById := people.Group("/:person_id")
+	celebritiesById := celebrities.Group("/:celebrity_id")
 	{
-		peopleById.GET("", handlers.GetPersonDetails)
-		peopleById.GET("/images", handlers.GetPersonImages)
-		peopleById.GET("/movie_credits", handlers.GetPersonMovieCredits)
-		peopleById.GET("/combined_credits", handlers.GetPersonCombinedCredits)
-		peopleById.GET("/external_ids", handlers.GetPersonExternalIds)
+		celebritiesById.GET("", handlers.GetCelebrityDetails)
+		celebritiesById.GET("/images", handlers.GetCelebrityImages)
+		celebritiesById.GET("/movie_credits", handlers.GetCelebrityMovieCredits)
+		celebritiesById.GET("/combined_credits", handlers.GetCelebrityCombinedCredits)
+		celebritiesById.GET("/external_ids", handlers.GetCelebrityExternalIds)
 	}
 }

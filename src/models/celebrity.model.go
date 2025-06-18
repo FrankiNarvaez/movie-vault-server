@@ -1,6 +1,6 @@
 package models
 
-type Person struct {
+type Celebrity struct {
 	Adult              bool      `json:"adult"`
 	AlsoKnownAs        *[]string `json:"also_known_as"`
 	Biography          *string   `json:"biography"`

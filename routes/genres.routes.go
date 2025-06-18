@@ -7,6 +7,6 @@ import (
 )
 
 func GenresRoutes(rg *gin.RouterGroup) {
-	rg.GET("/genres/tv", handlers.GetTvGenres)
+	rg.GET("/genres/series", handlers.GetSerieGenres)
 	rg.GET("/genres/movies", handlers.GetMoviesGenres)
 }

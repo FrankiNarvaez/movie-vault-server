@@ -7,19 +7,19 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func GetPopularPeople(c *gin.Context) {
+func GetPopularCelebrities(c *gin.Context) {
 	language := utils.ValidateQueryLanguage(c)
 	page := c.Query("page")
 	if page == "" {
 		page = "1"
 	}
-	people, err := services.FetchPopularPeople(language, page)
+	celebrities, err := services.FetchPopularCelebrities(language, page)
 	if err != nil {
 		utils.HandleError(c, err)
 		return
 	}
 
-	utils.HandleResponseOK(c, people)
+	utils.HandleResponseOK(c, celebrities)
 }
 
 func validateTimeWindow(c *gin.Context) string {
@@ -35,21 +35,21 @@ func validateTimeWindow(c *gin.Context) string {
 	return time_window
 }
 
-func GetPersonDetails(c *gin.Context) {
-	person_id := c.Param("person_id")
+func GetCelebrityDetails(c *gin.Context) {
+	celebrity_id := c.Param("celebrity_id")
 	language := utils.ValidateQueryLanguage(c)
-	person, err := services.FetchPersonDetails(person_id, language)
+	celebrity, err := services.FetchCelebrityDetails(celebrity_id, language)
 	if err != nil {
 		utils.HandleError(c, err)
 		return
 	}
 
-	utils.HandleResponseOK(c, person)
+	utils.HandleResponseOK(c, celebrity)
 }
 
-func GetPersonImages(c *gin.Context) {
-	person_id := c.Param("person_id")
-	images, err := services.FetchPersonImages(person_id)
+func GetCelebrityImages(c *gin.Context) {
+	celebrity_id := c.Param("celebrity_id")
+	images, err := services.FetchCelebrityImages(celebrity_id)
 	if err != nil {
 		utils.HandleError(c, err)
 		return
@@ -58,10 +58,10 @@ func GetPersonImages(c *gin.Context) {
 	utils.HandleResponseOK(c, images)
 }
 
-func GetPersonMovieCredits(c *gin.Context) {
-	person_id := c.Param("person_id")
+func GetCelebrityMovieCredits(c *gin.Context) {
+	celebrity_id := c.Param("celebrity_id")
 	language := utils.ValidateQueryLanguage(c)
-	credits, err := services.FetchPersonMovieCredits(person_id, language)
+	credits, err := services.FetchCelebrityMovieCredits(celebrity_id, language)
 	if err != nil {
 		utils.HandleError(c, err)
 		return
@@ -70,10 +70,10 @@ func GetPersonMovieCredits(c *gin.Context) {
 	utils.HandleResponseOK(c, credits)
 }
 
-func GetPersonCombinedCredits(c *gin.Context) {
-	person_id := c.Param("person_id")
+func GetCelebrityCombinedCredits(c *gin.Context) {
+	celebrity_id := c.Param("celebrity_id")
 	language := utils.ValidateQueryLanguage(c)
-	credits, err := services.FetchPersonCombinedCredits(person_id, language)
+	credits, err := services.FetchCelebrityCombinedCredits(celebrity_id, language)
 	if err != nil {
 		utils.HandleError(c, err)
 		return
@@ -82,9 +82,9 @@ func GetPersonCombinedCredits(c *gin.Context) {
 	utils.HandleResponseOK(c, credits)
 }
 
-func GetPersonExternalIds(c *gin.Context) {
-	person_id := c.Param("person_id")
-	external_ids, err := services.FetchPersonExternalIds(person_id)
+func GetCelebrityExternalIds(c *gin.Context) {
+	celebrity_id := c.Param("celebrity_id")
+	external_ids, err := services.FetchCelebrityExternalIds(celebrity_id)
 	if err != nil {
 		utils.HandleError(c, err)
 		return
