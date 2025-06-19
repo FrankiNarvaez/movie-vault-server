@@ -41,3 +41,11 @@ func ValidateTimeWindow(timeWindow string) (string, error) {
 
 	return timeWindow, nil
 }
+
+func ValidateQueryYear(c *gin.Context) string {
+	year := c.Query("year")
+	if year == "" {
+		year = "0"
+	}
+	return year
+}

@@ -44,13 +44,14 @@ func SearchMovies(c *gin.Context) {
 	query := ValidateQuery(c)
 	include_adult := utils.ValidateIncludeAdult(c)
 	page := utils.ValidateQueryPage(c)
+	year := utils.ValidateQueryYear(c)
 
 	var filters models.Filters
 
 	if err := c.ShouldBindBodyWithJSON(&filters); err != nil {
 	}
 
-	movies, err := services.FetchSearchMovies(language, query, include_adult, page, filters)
+	movies, err := services.FetchSearchMovies(language, query, include_adult, page, filters, year)
 	if err != nil {
 		utils.HandleError(c, err)
 		return
@@ -64,13 +65,14 @@ func SearchSeries(c *gin.Context) {
 	query := ValidateQuery(c)
 	include_adult := utils.ValidateIncludeAdult(c)
 	page := utils.ValidateQueryPage(c)
+	year := utils.ValidateQueryYear(c)
 
 	var filters models.Filters
 
 	if err := c.ShouldBindBodyWithJSON(&filters); err != nil {
 	}
 
-	series, err := services.FetchSearchSeries(language, query, include_adult, page, filters)
+	series, err := services.FetchSearchSeries(language, query, include_adult, page, filters, year)
 	if err != nil {
 		utils.HandleError(c, err)
 		return

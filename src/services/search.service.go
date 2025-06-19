@@ -7,10 +7,15 @@ import (
 	"movie/src/utils"
 )
 
-func FetchSearchMovies(language, query string, include_adult bool, page string, filters models.Filters) (types.SearchMovies, error) {
+func FetchSearchMovies(language, query string, include_adult bool, page string, filters models.Filters, year string) (types.SearchMovies, error) {
 	var movies types.SearchMovies
 
-	url := fmt.Sprintf("/search/movie?language=%s&query=%s&include_adult=%t&page=%s", language, query, include_adult, page)
+	var url string
+	if year != "0" {
+		url = fmt.Sprintf("/search/movie?query=%s&include_adult=%t&language=%s&page=%s&year=%s", query, include_adult, language, page, year)
+	} else {
+		url = fmt.Sprintf("/search/movie?query=%s&include_adult=%t&language=%s&page=%s", query, include_adult, language, page)
+	}
 
 	statusCode, err := utils.FetchFromTMDB(url, &movies)
 	if err != nil {
@@ -36,10 +41,15 @@ func FetchSearchMovies(language, query string, include_adult bool, page string, 
 	return movies, nil
 }
 
-func FetchSearchSeries(language, query string, include_adult bool, page string, filters models.Filters) (types.SearchSeries, error) {
+func FetchSearchSeries(language, query string, include_adult bool, page string, filters models.Filters, year string) (types.SearchSeries, error) {
 	var series types.SearchSeries
 
-	url := fmt.Sprintf("/search/tv?query=%s&include_adult=%t&language=%s&page=%s", query, include_adult, language, page)
+	var url string
+	if year != "0" {
+		url = fmt.Sprintf("/search/tv?query=%s&include_adult=%t&language=%s&page=%s&year=%s", query, include_adult, language, page, year)
+	} else {
+		url = fmt.Sprintf("/search/tv?query=%s&include_adult=%t&language=%s&page=%s", query, include_adult, language, page)
+	}
 
 	statusCode, err := utils.FetchFromTMDB(url, &series)
 	if err != nil {
