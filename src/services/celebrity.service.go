@@ -19,18 +19,6 @@ func FetchPopularCelebrities(language string, page string) (types.PopularCelebri
 	return celebrities, nil
 }
 
-func FetchTrendingCelebrities(language string, time_window string) (types.TrendingCelebrities, error) {
-	var celebrities types.TrendingCelebrities
-	url := fmt.Sprintf("/trending/person/%s?language=%s", time_window, language)
-
-	status, err := utils.FetchFromTMDB(url, &celebrities)
-	if err != nil {
-		return types.TrendingCelebrities{}, utils.HandleTMDBError(status, "trending celebrities", err)
-	}
-
-	return celebrities, nil
-}
-
 func FetchCelebrityDetails(celebrity_id string, language string) (models.Celebrity, error) {
 	var celebrity models.Celebrity
 	url := fmt.Sprintf("/person/%s?language=%s", celebrity_id, language)

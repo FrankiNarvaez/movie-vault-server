@@ -27,23 +27,6 @@ func FetchPopularMovies(language, page string) (types.Movies, error) {
 	return movies, nil
 }
 
-func FetchTrendingMovies(time_window, language string) (types.Movies, error) {
-	var movies types.Movies
-
-	if language == "" {
-		language = "en-US"
-	}
-
-	url := fmt.Sprintf("/trending/movie/%s?language=%s", time_window, language)
-
-	statusCode, err := utils.FetchFromTMDB(url, &movies)
-	if err != nil {
-		return types.Movies{}, utils.HandleTMDBError(statusCode, "trending movies", err)
-	}
-
-	return movies, nil
-}
-
 func FetchMovieDetails(movie_id, language string) (models.Movie, error) {
 	var movie models.Movie
 

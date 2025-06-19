@@ -17,16 +17,6 @@ func FetchPopularSeries(language, page string) (types.PopularSeries, error) {
 	return series, nil
 }
 
-func FetchTrendingSeries(language, time string) (types.TrendingSeries, error) {
-	var series types.TrendingSeries
-	url := fmt.Sprintf("/trending/tv/%s?language=%s", time, language)
-
-	if status, err := utils.FetchFromTMDB(url, &series); err != nil {
-		return types.TrendingSeries{}, utils.HandleTMDBError(status, "trending series", err)
-	}
-	return series, nil
-}
-
 func FetchSeriesDetails(series_id, language string) (types.SeriesDetails, error) {
 	var series types.SeriesDetails
 	url := fmt.Sprintf("/tv/%s?language=%s", series_id, language)
